@@ -18,12 +18,12 @@ export default {
   theme: {
     extend: {
         colors: {
-            'primary': '#323443',
-            'secondary': '#323443',
-            'accent': '#8685ef',
+            'txt-primary': 'var(--text)',
+            'txt-secondary': 'var(--title)',
 
-            'txt-primary': '#faf7ff',
-            'txt-secondary': '#2b2b2b',
+            'primary': 'var(--bg)',
+            'secondary': 'var(--bg-secondary)',
+            'accent': '#8685ef'
         },
     },
   },

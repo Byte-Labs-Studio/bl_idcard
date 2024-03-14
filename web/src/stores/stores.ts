@@ -1,4 +1,4 @@
-import { TIdInfo } from '@typings/id';
+import { TIDInfo, TIDType, TIDTypes } from '@typings/id';
 import { IsEnvBrowser } from '@utils/eventsHandlers';
 import { get, writable } from 'svelte/store';
 
@@ -35,4 +35,8 @@ export const IS_BROWSER = writable<boolean>(!(window as any).invokeNative);
 export const VISIBLE = writable<boolean>(false);
 
 
-export const ID_INFO = writable<TIdInfo>(null);
+export const ID_INFO = writable<TIDInfo>(null);
+
+export const ID_TYPES = writable<TIDTypes>(null);
+
+export const ID_TYPE = writable<TIDType>(null);

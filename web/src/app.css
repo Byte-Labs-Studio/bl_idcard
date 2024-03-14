@@ -15,14 +15,13 @@
 :root {
     font-size: 62.5%;
 
-    --primary: theme('colors.primary');
-    --secondary: theme('colors.secondary');
-    --accent: theme('colors.accent');
+    --text: '#323443';
+    --title: '#F97C81';
 
-    --text-primary: theme('colors.txt-primary');
-    --text-secondary: theme('colors.txt-secondary');
+    --bg: '#8685ef';
+    --bg-secondary: '#8685ef';
 
-    color: var(--text-primary);
+    color: var(--text);
 }
 
 html, body {
@@ -32,11 +31,18 @@ html, body {
     overflow: hidden;
 }
 
-.mr-dafoe-regular {
-    font-family: "Mr Dafoe", cursive;
+@font-face {
+    /* PWSignaturetwo */
+
+    font-family: "Thesignature";
+    src: url("./fonts/Thesignature.otf"),
+}
+
+.signature {
+    font-family: "Thesignature";
     font-weight: 400;
-    font-style: normal;
-  }
+    font-kerning: normal;
+}
   
 .roboto-condensed-bold {
     font-family: "Roboto Condensed", sans-serif;
