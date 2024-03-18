@@ -1,15 +1,21 @@
 <script lang="ts">
     import { CONFIG, ID_INFO, IS_BROWSER } from './stores/stores';
     import { InitialiseListen } from '@utils/listeners';
-    import Visibility from '@providers/Visibility.svelte';
     import Card from '@components/Card.svelte';
+    import { onMount } from 'svelte';
+    import { SendEvent } from '@utils/eventsHandlers';
+    import { Send } from '@enums/events';
 
     CONFIG.set({
         fallbackResourceName: 'bl_idcard',
-        allowEscapeKey: true,
+        allowEscapeKey: false,
     });
 
     InitialiseListen();
+
+    onMount(() => {
+        SendEvent(Send.loaded);
+    });
 </script>
 
 {#if $ID_INFO}

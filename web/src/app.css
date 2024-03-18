@@ -30,18 +30,8 @@ html, body {
     font-size: 1.6rem;
     overflow: hidden;
 }
-
-@font-face {
-    /* PWSignaturetwo */
-
-    font-family: "Thesignature";
-    src: url("./fonts/Thesignature.otf"),
-}
-
 .signature {
-    font-family: "Thesignature";
-    font-weight: 400;
-    font-kerning: normal;
+    font-family: 'ActerumSignaturePersonalUse', sans-serif;
 }
   
 .roboto-condensed-bold {

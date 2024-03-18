@@ -5,4 +5,5 @@ export enum Receive {
 
 export enum Send {
     close = 'idcard:close',
+    loaded = 'idcard:loaded',
 }

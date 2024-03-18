@@ -35,16 +35,17 @@
 
         <div class="flex flex-row items-center justify-between w-full h-fit">
             <div
-                class="grid place-items-center overflow-visible w-[10vh] h-[10vh] rounded-full"
+                class="grid place-items-center w-[10vh] h-[10vh] rounded-full overflow-hidden"
             >
                 <PfpOverlay />
                 <div
                     style="background-image: url({imageURL});"
                     class="w-full h-full bg-center bg-contain bg-no-repeat grid place-items-center z-10"
                 />
+
                 <div
                     style="background-image: url({imageURL});"
-                    class="w-[55%] h-[55%] rounded-full bg-center bg-contain bg-no-repeat grid place-items-center z-0 absolute blur-[1vh]"
+                    class="w-1/2 h-1/2 rounded-full bg-center bg-contain bg-no-repeat grid place-items-center z-0 absolute blur-[1vh] "
                 />
             </div>
             <div
@@ -126,22 +127,25 @@
             <div
                 class="absolute grid place-items-center w-[5vh] h-[5vh] right-[1.5vh] bottom-[1.5vh] rounded-full overflow-hidden"
             >
+
                 <img
-                    src="./profileGradient.png"
-                    class="w-full h-full object-cover z-0 opacity-50 absolute"
-                    alt={firstName + lastName}
-                />
-                <img
-                    src={imageURL}
-                    class="w-11/12 h-11/12 object-cover z-10 absolute opacity-50 hue-rotate-[210deg]"
-                    alt={firstName + lastName}
-                />
+                src={imageURL}
+                class="w-full h-full object-cover z-10 absolute opacity-60 hue-rotate-[210deg]"
+                alt={firstName + lastName}
+            />
+
+            <img
+            src="./profileGradient.png"
+            class="w-full h-full object-cover z-0 absolute"
+            alt={firstName + lastName}
+        />
+
             </div>
         {/if}
 
         {#if stamp}
             <div
-                class="absolute opacity-10 w-[10vh] h-[10vh] right-[2vh] bottom-[2vh]"
+                class="absolute opacity-20 w-[10vh] h-[10vh] right-[2vh] bottom-[2vh]"
             >
                 <Stamp />
             </div>
@@ -149,7 +153,7 @@
 
         {#if signature}
             <h1
-                class="text-[3vh] signature text-black underline pl-[1vh] decoration-[0.18vh] underline-offset-[-0.5vh] absolute bottom-0"
+                class="text-[5vh] signature text-black underline decoration-[0.135vh] underline-offset-[-0.5vh] absolute translate-y-[20%] bottom-0 opacity-80 z-50"
             >
                 {firstName}
                 {lastName}

@@ -4,10 +4,6 @@
     import { ReceiveEvent, SendEvent } from '@utils/eventsHandlers';
     import { onMount } from 'svelte';
 
-    ReceiveEvent(Receive.visible, (visible: boolean): void => {
-        $VISIBLE = visible;
-    });
-
     onMount(() => {
         if (!$CONFIG.allowEscapeKey) return;
 
@@ -21,11 +17,9 @@
     });
 </script>
 
-{#if $VISIBLE}
-    <main>
-        <slot />
-    </main>
-{/if}
+<main>
+    <slot />
+</main>
 
 <style>
     main {

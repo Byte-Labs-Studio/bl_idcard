@@ -10,6 +10,11 @@ const AlwaysListened: DebugEventCallback[] = [
         action: Receive.cardData,
         handler: (data: TIDInfo) => {
 
+            if (!data) {
+                ID_INFO.set(null);
+                return;
+            }
+
             const idType = data.idType
             if (!idType) {
                 console.error('No ID Type found in card types config.');

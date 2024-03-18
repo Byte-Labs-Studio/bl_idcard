@@ -1,8 +1,0 @@
-{
-  "extends": "../tsconfig.json",
-  "compilerOptions": {
-    "baseUrl": ".",
-    "types": ["@citizenfx/client"],
-  },
-  "include": ["./", "../common", "../index.d.ts"],
-}
