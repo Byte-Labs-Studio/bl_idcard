@@ -1,4 +1,4 @@
-<svg viewBox="0 0 195 231" fill="none" class="absolute w-[150%] h-3/4 z-20 opacity-50" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 195 231" fill="none" class="absolute w-[150%] h-3/4 z-20 opacity-10" xmlns="http://www.w3.org/2000/svg">
     <g style="mix-blend-mode:overlay">
     <path d="M-6 18.6768C27.5435 16.8472 102.406 6.39527 114.299 3.12484C132.596 -1.90661 171.933 -0.0770441 193.889 18.6768" stroke="url(#paint0_linear_104_68814)"/>
     <path d="M-6 28.7393C27.5435 26.9097 102.406 16.4578 114.299 13.1873C132.596 8.15589 171.933 9.98546 193.889 28.7393" stroke="url(#paint1_linear_104_68814)"/>

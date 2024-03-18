@@ -11,12 +11,12 @@ import { TIDTypes } from '@typings/id'
 const InitDebug: DebugAction[] = [
     {
         label: 'Visible',
-        action: () => toggleVisible(true),
+        action: ()=> toggleVisible(true),
         delay: 500,
     },
     {
         label: 'Init Info',
-        action: () => {
+        action: ()=> {
             DebugEventSend(Receive.cardData, {
                 id: '123456',
                 dob: '01/01/1970',
@@ -34,11 +34,47 @@ const InitDebug: DebugAction[] = [
         action: () => {
 
             const types: TIDTypes = {
+                driver_license: {
+                    type: 'driver_license',
+                    title: 'SAN ANDREAS',
+                    titleColour: '#bdbdbd',
+        
+                    label: 'DRIVER LICENSE',
+                
+                    stamp: true,
+                    profileStamp: false,
+                
+                    signature: true,
+                
+                    bgColour: '#000',
+                    bgColourSecondary: '#000',
+                
+                    textColour: '#FFF',
+                },
+        
+                weapon_license: {
+                    type: 'weapon_license',
+                    title: 'SAN ANDREAS',
+                    titleColour: '#BEBEBE',
+        
+                    label: 'WEAPON LICENSE',
+                
+                    stamp: true,
+                    profileStamp: false,
+                
+                    signature: true,
+                
+                    bgColour: '#460000',
+                    bgColourSecondary: '#E90000',
+                
+                    textColour: '#FFF',
+                },
+        
                 female_id: {
-                    type : 'female_id',
+                    type: 'female_id',
                     title: 'SAN ANDREAS',
                     titleColour: '#F97C81',
-
+        
                     label: 'ID CARD',
                 
                     stamp: true,
@@ -51,11 +87,12 @@ const InitDebug: DebugAction[] = [
                 
                     textColour: '#323443',
                 },
+                
                 male_id: {
-                    type : 'male_id',
+                    type: 'male_id',
                     title: 'SAN ANDREAS',
                     titleColour: '#3A84AD',
-
+        
                     label: 'ID CARD',
                 
                     stamp: true,

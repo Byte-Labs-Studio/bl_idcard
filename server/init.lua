@@ -34,6 +34,7 @@ local function createLicense(source, licenses)
     for _, license in ipairs(licenses) do
         local configType = config.items[license]
 
+        print(license)
 
         if configType then
             local idType = nil
@@ -48,6 +49,7 @@ local function createLicense(source, licenses)
             player.addItem(license, 1, charInfo)
         else
             print('License type not found in config: ' .. license)
+            print(json.encode(licenses, {indent = true}))
         end
 
     end

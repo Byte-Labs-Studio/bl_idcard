@@ -14,6 +14,8 @@ local function openCardPopup(data)
     local year, month, day = string.match(dob, "(%d+)-(%d+)-(%d+)")
     data.dob = month .. '/' .. day .. '/' .. year
 
+    print(json.encode(data, {indent=true}))
+
     currentCardPopup = data
     SendNUIEvent(Send.cardData, data)
 end

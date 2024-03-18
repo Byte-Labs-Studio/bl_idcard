@@ -17,23 +17,27 @@
     <div class="w-full h-full flex flex-col z-10">
         <span class="flex flex-row items-center justify-between">
             <h1
-                class="uppercase text-txt-secondary font-bold text-[2.5vh] grid place-items-center"
+                class="uppercase text-txt-secondary font-bold text-[2vh] grid place-items-center whitespace-nowrap"
             >
                 {title}
                 <h1
-                    class="absolute text-txt-secondary text brightness-75 -z-10"
+                    class="absolute text-txt-secondary text brightness-75 -z-10 whitespace-nowrap"
                 >
                     {title}
                 </h1>
             </h1>
-            <h1 class="uppercase txt-primary opacity-80 font-bold text-[1.5vh]">
+            <h1
+                class="uppercase txt-primary opacity-80 font-bold text-[1.5vh] whitespace-nowrap"
+            >
                 {label}
             </h1>
         </span>
 
         <div class="w-full h-[0.2vh] bg-black/20" />
 
-        <div class="flex flex-row items-center justify-between w-full h-fit">
+        <div
+            class="flex flex-row items-center justify-between w-full h-fit pr-[0.5vw]"
+        >
             <div
                 class="grid place-items-center w-[10vh] h-[10vh] rounded-full overflow-hidden"
             >
@@ -45,7 +49,7 @@
 
                 <div
                     style="background-image: url({imageURL});"
-                    class="w-1/2 h-1/2 rounded-full bg-center bg-contain bg-no-repeat grid place-items-center z-0 absolute blur-[1vh] "
+                    class="w-1/2 h-1/2 rounded-full bg-center bg-contain bg-no-repeat grid place-items-center z-0 absolute blur-[1vh]"
                 />
             </div>
             <div
@@ -127,19 +131,17 @@
             <div
                 class="absolute grid place-items-center w-[5vh] h-[5vh] right-[1.5vh] bottom-[1.5vh] rounded-full overflow-hidden"
             >
+                <img
+                    src={imageURL}
+                    class="w-full h-full object-cover z-10 absolute opacity-60 hue-rotate-[210deg]"
+                    alt={firstName + lastName}
+                />
 
                 <img
-                src={imageURL}
-                class="w-full h-full object-cover z-10 absolute opacity-60 hue-rotate-[210deg]"
-                alt={firstName + lastName}
-            />
-
-            <img
-            src="./profileGradient.png"
-            class="w-full h-full object-cover z-0 absolute"
-            alt={firstName + lastName}
-        />
-
+                    src="./profileGradient.png"
+                    class="w-full h-full object-cover z-0 absolute"
+                    alt={firstName + lastName}
+                />
             </div>
         {/if}
 
@@ -153,7 +155,7 @@
 
         {#if signature}
             <h1
-                class="text-[5vh] signature text-black underline decoration-[0.135vh] underline-offset-[-0.5vh] absolute translate-y-[20%] bottom-0 opacity-80 z-50"
+                class="text-[5vh] signature text-txt-primary underline decoration-[0.135vh] underline-offset-[-0.5vh] absolute translate-y-[20%] bottom-0 opacity-80 z-50"
             >
                 {firstName}
                 {lastName}
@@ -180,6 +182,6 @@
         text-shadow:
             0.1vh 0.1vh 0.1vh var(--title),
             0.2vh 0.2vh 0.1vh var(--title),
-            0.3vh 0.3vh 0.1vh var(--title);
+            0.15vh 0.15vh 0.1vh var(--title);
     }
 </style>
