@@ -1,6 +1,7 @@
-import { Receive } from "@enums/events"
+import { Receive, Send } from "@enums/events"
 import { DebugEventCallback } from "@typings/events"
-import { ReceiveEvent } from "./eventsHandlers"
+import { ReceiveEvent, SendEvent } from "./eventsHandlers"
+import { convertImage } from "./imageToBase64"
 import { TIDInfo, TIDTypes } from "@typings/id"
 import { ID_INFO, ID_TYPE, ID_TYPES } from "@stores/stores"
 import { get } from "svelte/store"
@@ -49,11 +50,18 @@ const AlwaysListened: DebugEventCallback[] = [
         }
     },
     {
+        action: Receive.requestBaseUrl,
+        handler: async (txd: string) => {
+            console.log(txd)
+            const baseUrl = await convertImage(txd);
+            SendEvent(Send.resolveBaseUrl, baseUrl);
+        }
+    },
+    {
         action: Receive.config,
         handler: (data: TIDTypes) => {
             ID_TYPES.set(data);
         }
-    
     }
 ]
 

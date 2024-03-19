@@ -18,8 +18,7 @@ local function createLicense(source, licenses)
         return
     end
 
-    local core = Framework.core
-    local player = core.GetPlayer(source)
+    local player = Framework.core.GetPlayer(source)
 
     local playerCharInfo = player.charinfo
     local charInfo = {
@@ -34,7 +33,6 @@ local function createLicense(source, licenses)
     for _, license in ipairs(licenses) do
         local configType = config.items[license]
 
-        print(license)
 
         if configType then
             local idType = nil
@@ -49,13 +47,32 @@ local function createLicense(source, licenses)
             player.addItem(license, 1, charInfo)
         else
             print('License type not found in config: ' .. license)
-            print(json.encode(licenses, {indent = true}))
         end
 
     end
 end
 exports('CreateLicense', createLicense)
 
+if config.Debug then
+    lib.addCommand('giveidcard', {
+        help = 'Gives an item to a player',
+        params = {
+            {
+                name = 'target',
+                type = 'playerId',
+                help = 'Target player\'s server id',
+            },
+            {
+                name = 'license',
+                type = 'string',
+                help = 'License Name: [id_card, driver_license]',
+            },
+        },
+        restricted = not config.Debug and 'group.admin'
+    }, function(source, args, raw)
+        createLicense(args.target, args.license)
+    end)
+end
 
 CreateThread(function()
     local items = config.items

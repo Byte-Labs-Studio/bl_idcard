@@ -1,4 +1,6 @@
 local Utils = {}
+local events = require "client.events"
+local promiseId = nil
 
 --- Used to send NUI events to the UI
 --- @param action string
@@ -10,21 +12,38 @@ function Utils.SendNUIEvent(action, data)
     })
 end
 
+RegisterNUICallback(events.Receive.resolveBaseUrl, function(url, cb)
+	if not promiseId then return end
+	promiseId:resolve(url)
+	promiseId = nil
+    cb(1)
+end)
+
 function Utils.GetMugShot()
-    local oldMask = GetPedDrawableVariation(cache.ped, 1)
+	if promiseId then return end
+
+	local ped = cache.ped
+    local oldMask = GetPedDrawableVariation(ped, 1)
     local hasMask = oldMask ~= 0
 
     if hasMask then
-        SetPedComponentVariation(cache.ped, 1, 0, 0, 2)
+        SetPedComponentVariation(ped, 1, 0, 0, 2)
     end
 
-    local mugshot = exports['MugShotBase64']:GetMugShotBase64(cache.ped, false)
+	local headShotHandle = RegisterPedheadshotTransparent(ped) or RegisterPedheadshot_3(ped)
+	if not lib.waitFor(function()
+		if IsPedheadshotReady(headShotHandle) and IsPedheadshotValid(headShotHandle) then return true end
+	end, 'couldn\'t load mugshot', 5000) then return end
 
-    if hasMask then
-        SetPedComponentVariation(cache.ped, 1, oldMask, 0, 2)
+	local headShotTxd = GetPedheadshotTxdString(headShotHandle)
+	Utils.SendNUIEvent(events.Send.requestBaseUrl, headShotTxd)
+	UnregisterPedheadshot(headShotHandle)
+	if hasMask then
+        SetPedComponentVariation(ped, 1, oldMask, 0, 2)
     end
 
-    return mugshot
+	promiseId = promise.new()
+    return Citizen.Await(promiseId)
 end
 
 local function rotationToDirection(rotation)
