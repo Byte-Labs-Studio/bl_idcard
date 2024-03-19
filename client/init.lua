@@ -5,18 +5,26 @@ local callback = lib.callback
 local SendNUIEvent in utils
 local Send, Receive in events
 
-local currentCardPopup = nil
+local isCardOpen = false
+local cardObject = 0
 
 ---@param data IDInfo
 local function openCardPopup(data)
-    currentCardPopup = data
-    currentCardPopup.actionid = math.random(100000, 999999)
+    isCardOpen = true
     SendNUIEvent(Send.cardData, data)
 end
 
+local function clearPed()
+    if DoesEntityExist(cardObject) then
+        SetEntityAsMissionEntity(cardObject, true, true)
+        DeleteEntity(cardObject)
+    end
+    ClearPedTasks(cache.ped)
+end
+
 local function closeCardPopup()
-    if currentCardPopup == nil then return end
-    currentCardPopup = nil
+    isCardOpen = false
+    clearPed()
     SendNUIEvent(Send.cardData, nil)
 end
 
@@ -25,40 +33,40 @@ RegisterNetEvent('bl_idcard:open', function(data)
     openCardPopup(data)
 
     local popupConfig = config.popup
-
     if popupConfig.autoclose then
-
-        local actionid = currentCardPopup and currentCardPopup.actionid
         SetTimeout(popupConfig.autoclose, function()
-            if currentCardPopup and currentCardPopup.actionid == actionid then
-                closeCardPopup()
-            end
+            closeCardPopup()
         end)
     end
 end)
 
+RegisterNUICallback(Receive.loaded, function(_, cb)
+    cb(1)
+    SendNUIEvent(Send.config, config.idTypes)
+end)
+
 callback.register('bl_idcard:use', function(itemName)
+    if isCardOpen then return end
     local configType = config.items[itemName]
     local ped = cache.ped
     local prop = configType.prop
     if prop then
         local playerCoords = GetEntityCoords(ped)
-        local obj = CreateObject(prop, playerCoords.x, playerCoords.y, playerCoords.z + 0.2, true, true, true)
+        cardObject = CreateObject(prop, playerCoords.x, playerCoords.y, playerCoords.z + 0.2, true, true, true)
         local bone = GetPedBoneIndex(ped, 57005)
-        AttachEntityToEntity(obj, ped, bone, 0.1000, 0.0200, -0.0300, -90.000, 170.000, 78.999, true, true, false, true, 1, true)
-        SetModelAsNoLongerNeeded(obj)
-
-        SetTimeout(2500, function()
-            DeleteEntity(obj)
-            ClearPedTasks(ped)
-        end)
+        AttachEntityToEntity(cardObject, ped, bone, 0.1000, 0.0200, -0.0300, -90.000, 170.000, 78.999, true, true, false, true, 1, true)
+        SetModelAsNoLongerNeeded(cardObject)
     end
 
     local anim = config.animation
     if anim then
         lib.requestAnimDict(anim.dict)
-        TaskPlayAnim(ped, anim.dict, anim.clip, 3.0, -1, -1, 50, -1, false, false, false)
+        TaskPlayAnim(ped, anim.dict, anim.clip, 1.0, 1.0, 10000, 63, 0.0, false, false, false)
     end
+
+    SetTimeout(3000, function()
+        clearPed()
+    end)
 
     local target = utils.GetPlayerLookingAt()
 
@@ -80,9 +88,4 @@ end)
 RegisterCommand('closeidcard', closeCardPopup, false)
 
 RegisterKeyMapping('closeidcard', 'Close ID Card Popup', 'keyboard', config.popup.key)
-
-RegisterNUICallback(Receive.loaded, function(_, cb)
-    cb(1)
-    SendNUIEvent(Send.config, config.idTypes)
-end)
 
