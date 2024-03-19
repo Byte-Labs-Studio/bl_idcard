@@ -20,6 +20,7 @@ Discord: [Byte Labs](https://discord.gg/fqsqSjZfxE)
 1. Download
 2. Extract the `bl_idcard` folder to your resources directory
 3. Add `ensure bl_idcard` to your server.cfg after bl_bridge
+4. Follow [Docs](https://docs.byte-labs.net/bl_idcard) Instructions
 4. Configure the `config.lua` to your liking
 
 
