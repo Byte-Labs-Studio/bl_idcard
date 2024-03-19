@@ -85,3 +85,4 @@ RegisterNUICallback(Receive.loaded, function(_, cb)
     cb(1)
     SendNUIEvent(Send.config, config.idTypes)
 end)
+

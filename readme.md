@@ -1,8 +1,30 @@
+# Byte Labs - ID Card
+A customisable system with an immaculate ID card design for your FiveM server.
+
+Website: [Byte Labs](https://byte-labs.net)
+Discord: [Byte Labs](https://discord.gg/fqsqSjZfxE)
+
+![Preview](https://i.imgur.com/JFZ4mc4.png)
+![Preview](https://i.imgur.com/k1zyqY0.png)
+![Preview](https://i.imgur.com/aZrl1dv.png)
+![Preview](https://i.imgur.com/XW0O2Xe.png)
+
+## Features
+- Customisable ID card design with a clean and modern look
+
+## Dependencies
+- [bl_bridge](https://github.com/Byte-Labs-Project/bl_bridge)
+- [ox_lib](https://github.com/overextended/ox_lib)
+
+## Installation
+1. Download
+2. Extract the `bl_idcard` folder to your resources directory
+3. Add `ensure bl_idcard` to your server.cfg after bl_bridge
+4. Configure the `config.lua` to your liking
 
 
-
-
-# OX Inventory
+## Items
+### OX Inventory
 ```lua
 	["id_card"] = {
 		label = "ID Card",
@@ -29,7 +51,7 @@
 	},
 ```
 
-## QB / QS / PS Inventory
+### QB / QS / PS Inventory
 ```lua
     ['id_card']  = {
         name = 'id_card',
