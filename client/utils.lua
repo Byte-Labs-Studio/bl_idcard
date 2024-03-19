@@ -13,8 +13,10 @@ function Utils.SendNUIEvent(action, data)
 end
 
 RegisterNUICallback(events.Receive.resolveBaseUrl, function(url, cb)
+    print('here')
 	if not promiseId then return end
 	promiseId:resolve(url)
+    print(url)
 	promiseId = nil
     cb(1)
 end)
@@ -36,6 +38,7 @@ function Utils.GetMugShot()
 	end, 'couldn\'t load mugshot', 5000) then return end
 
 	local headShotTxd = GetPedheadshotTxdString(headShotHandle)
+    print(headShotTxd)
 	Utils.SendNUIEvent(events.Send.requestBaseUrl, headShotTxd)
 	UnregisterPedheadshot(headShotHandle)
 	if hasMask then

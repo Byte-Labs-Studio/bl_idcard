@@ -10,6 +10,7 @@ local currentCardPopup = nil
 ---@param data IDInfo
 local function openCardPopup(data)
     currentCardPopup = data
+    currentCardPopup.actionid = math.random(100000, 999999)
     SendNUIEvent(Send.cardData, data)
 end
 
@@ -26,8 +27,12 @@ RegisterNetEvent('bl_idcard:open', function(data)
     local popupConfig = config.popup
 
     if popupConfig.autoclose then
+
+        local actionid = currentCardPopup and currentCardPopup.actionid
         SetTimeout(popupConfig.autoclose, function()
-            closeCardPopup()
+            if currentCardPopup and currentCardPopup.actionid == actionid then
+                closeCardPopup()
+            end
         end)
     end
 end)
