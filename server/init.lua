@@ -51,7 +51,7 @@ local function createLicense(source, licenses)
 
     end
 end
-exports('CreateLicense', createLicense)
+exports('createLicense', createLicense)
 
 lib.addCommand('giveidcard', {
     help = 'Gives an item to a player',
