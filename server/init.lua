@@ -53,26 +53,24 @@ local function createLicense(source, licenses)
 end
 exports('CreateLicense', createLicense)
 
-if config.Debug then
-    lib.addCommand('giveidcard', {
-        help = 'Gives an item to a player',
-        params = {
-            {
-                name = 'target',
-                type = 'playerId',
-                help = 'Target player\'s server id',
-            },
-            {
-                name = 'license',
-                type = 'string',
-                help = 'License Name: [id_card, driver_license]',
-            },
+lib.addCommand('giveidcard', {
+    help = 'Gives an item to a player',
+    params = {
+        {
+            name = 'target',
+            type = 'playerId',
+            help = 'Target player\'s server id',
         },
-        restricted = not config.Debug and 'group.admin'
-    }, function(source, args, raw)
-        createLicense(args.target, args.license)
-    end)
-end
+        {
+            name = 'license',
+            type = 'string',
+            help = 'License Name: [id_card, driver_license]',
+        },
+    },
+    restricted = not config.Debug and 'group.admin'
+}, function(source, args, raw)
+    createLicense(args.target, args.license)
+end)
 
 CreateThread(function()
     local items = config.items
