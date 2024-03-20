@@ -18,6 +18,7 @@ local function clearPed()
     if DoesEntityExist(cardObject) then
         SetEntityAsMissionEntity(cardObject, true, true)
         DeleteEntity(cardObject)
+        cardObject = 0
     end
     ClearPedTasks(cache.ped)
 end

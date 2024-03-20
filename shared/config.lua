@@ -1,5 +1,5 @@
 return {
-    Debug = false,
+    Debug = true,
 
     items = {
         ['id_card'] = {
