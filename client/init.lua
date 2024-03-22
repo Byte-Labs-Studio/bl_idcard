@@ -34,7 +34,7 @@ RegisterNetEvent('bl_idcard:open', function(data)
     openCardPopup(data)
 
     local popupConfig = config.popup
-    if popupConfig.autoclose then
+    if popupConfig.autoclose ~= 0 then
         SetTimeout(popupConfig.autoclose, function()
             closeCardPopup()
         end)
