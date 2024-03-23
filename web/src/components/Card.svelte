@@ -3,6 +3,7 @@
     import Pattern from './svgs/Pattern.svelte';
     import PfpOverlay from './svgs/PfpOverlay.svelte';
     import Stamp from './svgs/Stamp.svelte';
+    import Backdrop from './svgs/Backdrop.svelte';
 
     let { id, firstName, lastName, dob, sex, imageURL } = $ID_INFO;
 
@@ -12,6 +13,7 @@
 <div
     class="aspect-ratio h-[20vh] bg absolute top-1/4 right-1/4 rounded-[2vh] overflow-hidden grid place-items-center py-[0vh]"
 >
+<Backdrop />
     <Pattern />
 
     <div class="w-full h-full flex flex-col z-10">

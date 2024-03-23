@@ -23,7 +23,7 @@ const InitDebug: DebugAction[] = [
                 firstName: 'John',
                 lastName: 'Doe',
                 sex: 'M',
-                idType: 'female_id',
+                idType: 'weapon_license',
                 imageURL: 'https://imgur.com/2nL5VV8.png'
             })
         },
