@@ -35,7 +35,7 @@ return {
 
     idTypes = {
         driver_license = {
-            type  = 'driver_license',
+            type = 'driver_license',
             title = 'SAN ANDREAS',
             titleColour = '#bdbdbd',
 
@@ -53,9 +53,9 @@ return {
         },
 
         weapon_license = {
-            type  = 'weapon_license',
+            type = 'weapon_license',
             title = 'SAN ANDREAS',
-            titleColour = '#BEBEBE',
+            titleColour = '#ff4538',
 
             label = 'WEAPON LICENSE',
         
@@ -71,7 +71,7 @@ return {
         },
 
         female_id = {
-            type  = 'female_id',
+            type = 'female_id',
             title = 'SAN ANDREAS',
             titleColour = '#F97C81',
 
@@ -83,15 +83,15 @@ return {
             signature = true,
         
             bgColour = '#f1e6db',
-            bgColourSecondary = '#d3f7ff',
+            bgColourSecondary = '#ff75bc',
         
             textColour = '#323443',
         },
         
         male_id = {
-            type  = 'male_id',
+            type = 'male_id',
             title = 'SAN ANDREAS',
-            titleColour = '#3A84AD',
+            titleColour = '#89B1FF',
 
             label = 'ID CARD',
         
@@ -100,8 +100,8 @@ return {
         
             signature = true,
         
-            bgColour = '#F1E6DB',
-            bgColourSecondary = '#D3F7FF',
+            bgColour = '#E5FCFF',
+            bgColourSecondary = '#6FCBE9',
         
             textColour = '#323443',
         },

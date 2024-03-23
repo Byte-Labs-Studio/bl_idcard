@@ -23,7 +23,7 @@ const InitDebug: DebugAction[] = [
                 firstName: 'John',
                 lastName: 'Doe',
                 sex: 'M',
-                idType: 'male_id',
+                idType: 'female_id',
                 imageURL: 'https://imgur.com/2nL5VV8.png'
             })
         },
@@ -55,7 +55,7 @@ const InitDebug: DebugAction[] = [
                 weapon_license: {
                     type: 'weapon_license',
                     title: 'SAN ANDREAS',
-                    titleColour: '#BEBEBE',
+                    titleColour: '#ff4538',
         
                     label: 'WEAPON LICENSE',
                 
@@ -83,7 +83,7 @@ const InitDebug: DebugAction[] = [
                     signature: true,
                 
                     bgColour: '#f1e6db',
-                    bgColourSecondary: '#d3f7ff',
+                    bgColourSecondary: '#ff75bc',
                 
                     textColour: '#323443',
                 },
@@ -91,7 +91,7 @@ const InitDebug: DebugAction[] = [
                 male_id: {
                     type: 'male_id',
                     title: 'SAN ANDREAS',
-                    titleColour: '#3A84AD',
+                    titleColour: '#89B1FF',
         
                     label: 'ID CARD',
                 
@@ -100,8 +100,8 @@ const InitDebug: DebugAction[] = [
                 
                     signature: true,
                 
-                    bgColour: '#F1E6DB',
-                    bgColourSecondary: '#D3F7FF',
+                    bgColour: '#E5FCFF',
+                    bgColourSecondary: '#6FCBE9',
                 
                     textColour: '#323443',
                 },

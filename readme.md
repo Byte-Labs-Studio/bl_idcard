@@ -4,10 +4,10 @@ A customisable system with an immaculate ID card design for your FiveM server.
 Website: [Byte Labs](https://byte-labs.net)
 Discord: [Byte Labs](https://discord.gg/fqsqSjZfxE)
 
-![Preview](https://i.imgur.com/JFZ4mc4.png)
-![Preview](https://i.imgur.com/k1zyqY0.png)
-![Preview](https://i.imgur.com/aZrl1dv.png)
-![Preview](https://i.imgur.com/XW0O2Xe.png)
+![Preview](https://imgur.com/bM5WMcG.png)
+![Preview](https://imgur.com/sc4SrJW.png)
+![Preview](https://imgur.com/SV6tedu.png)
+![Preview](https://imgur.com/xMTgLtC.png)
 
 ## Features
 - Customisable ID card design with a clean and modern look

@@ -10,14 +10,14 @@
 </script>
 
 <div
-    class="aspect-ratio h-[20vh] bg absolute top-1/4 right-1/4 rounded-[2vh] overflow-hidden grid place-items-center px-[1vh] py-[0.5vh]"
+    class="aspect-ratio h-[20vh] bg absolute top-1/4 right-1/4 rounded-[2vh] overflow-hidden grid place-items-center py-[0vh]"
 >
     <Pattern />
 
     <div class="w-full h-full flex flex-col z-10">
-        <span class="flex flex-row items-center justify-between">
+        <span class="flex flex-col items-center justify-between gap-0">
             <h1
-                class="uppercase text-txt-secondary font-bold text-[2vh] grid place-items-center whitespace-nowrap"
+                class="uppercase text-txt-secondary font-bold tracking-[0.25vh] text-[2.5vh] grid place-items-center whitespace-nowrap"
             >
                 {title}
                 <h1
@@ -27,109 +27,93 @@
                 </h1>
             </h1>
             <h1
-                class="uppercase txt-primary opacity-80 font-bold text-[1.5vh] whitespace-nowrap"
+                class="uppercase txt-primary opacity-80 font-bold text-[1.5vh] whitespace-nowrap leading-[1vh]"
             >
                 {label}
             </h1>
         </span>
 
-        <div class="w-full h-[0.2vh] bg-black/20" />
+        <!-- <div class="w-full h-[0.2vh] bg-black/20" /> -->
+        <PfpOverlay />
+        <div
+            class="grid place-items-center w-[10vh] h-[10vh] left-[0.5vw] rounded-full overflow-hidden absolute top-1/2 -translate-y-1/2"
+        >
+
+            <div
+                style="background-image: url({imageURL});"
+                class="w-full h-full bg-center bg-contain bg-no-repeat grid place-items-center z-10"
+            />
+
+            <div
+                style="background-image: url({imageURL});"
+                class="w-1/2 h-1/2 rounded-full bg-center bg-contain bg-no-repeat grid place-items-center z-0 absolute blur-[1vh]"
+            />
+        </div>
 
         <div
-            class="flex flex-row items-center justify-between w-full h-fit pr-[0.5vw]"
+            class="flex flex-row w-[18vh] h-full items-start justify-between uppercase roboto-condensed-bold overflow-visible absolute right-[2vh] top-[5.5vh]"
         >
-            <div
-                class="grid place-items-center w-[10vh] h-[10vh] rounded-full overflow-hidden"
-            >
-                <PfpOverlay />
-                <div
-                    style="background-image: url({imageURL});"
-                    class="w-full h-full bg-center bg-contain bg-no-repeat grid place-items-center z-10"
-                />
-
-                <div
-                    style="background-image: url({imageURL});"
-                    class="w-1/2 h-1/2 rounded-full bg-center bg-contain bg-no-repeat grid place-items-center z-0 absolute blur-[1vh]"
-                />
-            </div>
-            <div
-                class="flex flex-row w-[18vh] pr-[1vh] pt-[1vh] h-full items-start justify-between uppercase roboto-condensed-bold overflow-visible"
-            >
-                <div
-                    class="flex flex-col items-start justify-center gap-[1vh] overflow-visible"
-                >
-                    <div class="flex flex-col items-start justify-center gap-0">
-                        <span
-                            class="flex flex-row gap-[0.5vh] items-center justify-center"
-                        >
-                            <h1 class="text-[1vh] text-txt-primary opacity-80">
-                                ID
-                            </h1>
-                            <h1 class="text-[1.5vh] text-txt-primary">
-                                {id}
-                            </h1>
-                        </span>
-
-                        <span
-                            class="flex flex-row gap-[0.5vh] items-center justify-center"
-                        >
-                            <h1 class="text-[1vh] text-txt-primary opacity-80">
-                                LN
-                            </h1>
-                            <h1 class="text-[1.5vh] text-txt-primary">
-                                {lastName}
-                            </h1>
-                        </span>
-
-                        <span
-                            class="flex flex-row gap-[0.5vh] items-center justify-center"
-                        >
-                            <h1 class="text-[1vh] text-txt-primary opacity-80">
-                                FN
-                            </h1>
-                            <h1 class="text-[1.5vh] text-txt-primary">
-                                {firstName}
-                            </h1>
-                        </span>
-                    </div>
-
-                    <div class="flex flex-col items-start justify-center">
-                        <span
-                            class="flex flex-row gap-[0.5vh] items-center justify-center"
-                        >
-                            <h1 class="text-[1vh] text-txt-primary opacity-80">
-                                DOB
-                            </h1>
-                            <h1 class="text-[1.5vh] text-txt-primary">
-                                {dob}
-                            </h1>
-                        </span>
-
-                        <span
-                            class="flex flex-row gap-[0.5vh] items-center justify-center"
-                        >
-                            <h1 class="text-[1vh] text-txt-primary opacity-80">
-                                SEX
-                            </h1>
-                            <h1 class="text-[1.5vh] text-txt-primary">
-                                {sex}
-                            </h1>
-                        </span>
-                    </div>
-                </div>
-
-                <span
-                    class="flex flex-row gap-[0.5vh] items-center justify-center"
-                >
-                    <h1 class="text-[1vh] text-txt-primary opacity-80">EXP</h1>
-                    <h1 class="text-[1.5vh] text-txt-primary">12/12/2030</h1>
+            <div class="flex flex-col items-start justify-center gap-[1vh]">
+                <span class="flex flex-col gap-0 items-start justify-center">
+                    <h1 class="text-[1.2vh] text-txt-primary opacity-80">ID</h1>
+                    <h1 class="text-[1.5vh] text-txt-primary leading-[1vh]">
+                        {id}
+                    </h1>
                 </span>
+
+                <span class="flex flex-col gap-0 items-start justify-center">
+                    <h1 class="text-[1.2vh] text-txt-primary opacity-80">
+                        LASTNAME
+                    </h1>
+                    <h1 class="text-[1.75vh] text-txt-primary leading-[1vh]">
+                        {lastName}
+                    </h1>
+                </span>
+
+                <span class="flex flex-col gap-0 items-start justify-center">
+                    <h1 class="text-[1.2vh] text-txt-primary opacity-80">
+                        FIRSTNAME
+                    </h1>
+                    <h1 class="text-[1.75vh] text-txt-primary leading-[1vh]">
+                        {firstName}
+                    </h1>
+                </span>
+            </div>
+
+            <div class="flex flex-col items-start justify-center gap-[1vh]">
+
+                <span class="flex flex-col gap-0 items-start justify-center">
+                    <h1 class="text-[1.2vh] text-txt-primary opacity-80">
+                        EXP
+                    </h1>
+                    <h1 class="text-[1.5vh] text-txt-primary leading-[1vh]">
+                        12/12/2030
+                    </h1>
+                </span>
+
+                <span class="flex flex-col gap-0 items-start justify-center">
+                    <h1 class="text-[1.2vh] text-txt-primary opacity-80">DOB</h1>
+                    <h1 class="text-[1.5vh] text-txt-primary leading-[1vh]">
+                        {dob}
+                    </h1>
+                </span>
+
+                <span class="flex flex-col gap-0 items-start justify-center">
+                    <h1 class="text-[1.2vh] text-txt-primary opacity-80">
+                        SEX
+                    </h1>
+                    <h1 class="text-[1.5vh] text-txt-primary leading-[1vh]">
+                        {sex.split('')[0]}
+                    </h1>
+                </span>
+
+
             </div>
         </div>
 
         {#if profileStamp}
             <div
-                class="absolute grid place-items-center w-[5vh] h-[5vh] right-[1.5vh] bottom-[1.5vh] rounded-full overflow-hidden"
+                class="absolute grid place-items-center w-[4vh] h-[4vh] right-[0.75vh] bottom-[0.75vh] rounded-full overflow-hidden"
             >
                 <img
                     src={imageURL}
@@ -147,7 +131,7 @@
 
         {#if stamp}
             <div
-                class="absolute opacity-20 w-[10vh] h-[10vh] right-[2vh] bottom-[2vh]"
+                class="absolute w-[12.5vh] h-[12.5vh] right-[5vh] bottom-[2vh]"
             >
                 <Stamp />
             </div>
@@ -155,7 +139,7 @@
 
         {#if signature}
             <h1
-                class="text-[5vh] signature text-txt-primary underline decoration-[0.135vh] underline-offset-[-0.5vh] absolute translate-y-[20%] bottom-0 opacity-80 z-50"
+                class="text-[4vh] left-[1vh] signature text-txt-primary underline decoration-[0.135vh] underline-offset-[-0.5vh] absolute translate-y-[20%] bottom-[0.5vh] opacity-80 z-50"
             >
                 {firstName}
                 {lastName}
@@ -172,7 +156,7 @@
     .bg {
         background: var(--bg);
         background: linear-gradient(
-            90deg,
+            120deg,
             var(--bg) 0%,
             var(--bg-secondary) 100%
         );
