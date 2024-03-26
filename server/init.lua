@@ -1,11 +1,10 @@
 local config = require "shared.config"
 local callback = lib.callback
-
-
+local core = Framework.core
 ---comment
 ---@param source number
 ---@param licenses string | table The key in Config.items
-local function createLicense(source, licenses)
+local function createLicense(source, licenses, rtn)
 
     if type(licenses) == 'string' then
         licenses = {licenses}
@@ -18,7 +17,7 @@ local function createLicense(source, licenses)
         return
     end
 
-    local player = Framework.core.GetPlayer(source)
+    local player = core.GetPlayer(source)
 
     local playerCharInfo = player.charinfo
     local charInfo = {
@@ -45,10 +44,12 @@ local function createLicense(source, licenses)
 
             charInfo.idType = idType
             player.addItem(license, 1, charInfo)
+            if rtn then
+                return charInfo
+            end
         else
             print('License type not found in config: ' .. license)
         end
-
     end
 end
 exports('createLicense', createLicense)
@@ -75,7 +76,13 @@ end)
 CreateThread(function()
     local items = config.items
     for k, v in pairs(items) do
-        Framework.core.RegisterUsableItem(k, function(source, slot, metadata)
+        core.RegisterUsableItem(k, function(source, _, metadata)
+            if not metadata then
+                local player = core.GetPlayer(source)
+                player.removeItem(k, 1)
+                metadata = createLicense(source, k, true)
+            end
+
             local target = callback.await('bl_idcard:use', source, k)
 
             if target then
