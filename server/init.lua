@@ -77,7 +77,7 @@ CreateThread(function()
     local items = config.items
     for k, v in pairs(items) do
         core.RegisterUsableItem(k, function(source, _, metadata)
-            if not metadata then
+            if not metadata or not metadata.idType then
                 local player = core.GetPlayer(source)
                 player.removeItem(k, 1)
                 metadata = createLicense(source, k, true)
