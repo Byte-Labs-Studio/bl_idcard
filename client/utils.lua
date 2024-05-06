@@ -22,9 +22,9 @@ end)
 function Utils.GetMugShot()
 	if promiseId then return end
 
-		local ped = cache.ped
+	local ped = cache.ped
     local oldMask = GetPedDrawableVariation(ped, 1)
-		local numberoftexture = GetPedTextureVariation(ped,1)
+	local numberoftexture = GetPedTextureVariation(ped, 1)
     local hasMask = oldMask ~= 0
 
     if hasMask then
@@ -45,6 +45,7 @@ function Utils.GetMugShot()
 
 	promiseId = promise.new()
     return Citizen.Await(promiseId)
+end
 
 function Utils.GetPlayerLookingAt()
     local config = require "shared.config"
