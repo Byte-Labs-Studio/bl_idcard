@@ -24,7 +24,6 @@ function Utils.GetMugShot()
 
 	local ped = cache.ped
     local oldMask = GetPedDrawableVariation(ped, 1)
-	local numberoftexture = GetPedTextureVariation(ped, 1)
     local hasMask = oldMask ~= 0
 
     if hasMask then
@@ -39,8 +38,9 @@ function Utils.GetMugShot()
 	local headShotTxd = GetPedheadshotTxdString(headShotHandle)
 	Utils.SendNUIEvent(events.Send.requestBaseUrl, headShotTxd)
 	UnregisterPedheadshot(headShotHandle)
+	
 	if hasMask then
-        SetPedComponentVariation(ped, 1, oldMask, numberoftexture, 2)
+        SetPedComponentVariation(ped, 1, oldMask, GetPedTextureVariation(ped, 1), 2)
     end
 
 	promiseId = promise.new()
