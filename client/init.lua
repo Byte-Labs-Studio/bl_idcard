@@ -59,10 +59,12 @@ callback.register('bl_idcard:use', function(itemName)
         SetModelAsNoLongerNeeded(cardObject)
     end
 
-    local anim = config.animation
-    if anim then
-        lib.requestAnimDict(anim.dict)
-        TaskPlayAnim(ped, anim.dict, anim.clip, 1.0, 1.0, 10000, 63, 0.0, false, false, false)
+    if not cache.vehicle then
+        local anim = config.animation
+        if anim then
+            lib.requestAnimDict(anim.dict)
+            TaskPlayAnim(ped, anim.dict, anim.clip, 1.0, 1.0, 10000, 63, 0.0, false, false, false)
+        end
     end
 
     SetTimeout(3000, function()
