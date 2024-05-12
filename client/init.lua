@@ -15,12 +15,16 @@ local function openCardPopup(data)
 end
 
 local function clearPed()
+    local anim = config.animation
+    local ped = cache.ped
     if DoesEntityExist(cardObject) then
         SetEntityAsMissionEntity(cardObject, true, true)
         DeleteEntity(cardObject)
         cardObject = 0
     end
-    ClearPedTasks(cache.ped)
+    if IsEntityPlayingAnim(ped, anim.dict, anim.clip, 3) then
+        StopAnimTask(ped, anim.dict, anim.clip, 1.0)
+    end
 end
 
 local function closeCardPopup()
