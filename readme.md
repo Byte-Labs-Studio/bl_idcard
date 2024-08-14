@@ -1,6 +1,8 @@
 # Byte Labs - ID Card
 A customisable system with an immaculate ID card design for your FiveM server.
 
+![Preview](preview.png)
+
 Website: [Byte Labs](https://byte-labs.net)
 Discord: [Byte Labs](https://discord.gg/fqsqSjZfxE)
 
