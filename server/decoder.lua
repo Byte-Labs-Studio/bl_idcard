@@ -23,8 +23,6 @@ local function saveBase64AsPng(base64String, imageName)
         file:write(decodedData)
         file:close()
         return true
-    else
-        return false
     end
 end
 
