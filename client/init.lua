@@ -2,16 +2,14 @@ local utils = require "client.utils"
 local events = require "client.events"
 local config = require "shared.config"
 local callback = lib.callback
-local SendNUIEvent in utils
-local Send, Receive in events
-
+local Send, Receive = events.Send, events.Receive
 local isCardOpen = false
 local cardObject = 0
 
 ---@param data IDInfo
 local function openCardPopup(data)
     isCardOpen = true
-    SendNUIEvent(Send.cardData, data)
+    utils.SendNUIEvent(Send.cardData, data)
 end
 
 local function clearPed()
@@ -30,7 +28,7 @@ end
 local function closeCardPopup()
     isCardOpen = false
     clearPed()
-    SendNUIEvent(Send.cardData, nil)
+    utils.SendNUIEvent(Send.cardData, nil)
 end
 
 ---@param data IDInfo
@@ -47,7 +45,7 @@ end)
 
 RegisterNUICallback(Receive.loaded, function(_, cb)
     cb(1)
-    SendNUIEvent(Send.config, config.idTypes)
+    utils.SendNUIEvent(Send.config, config.idTypes)
 end)
 
 callback.register('bl_idcard:use', function(itemName)
@@ -88,9 +86,7 @@ callback.register('bl_idcard:use', function(itemName)
     return target
 end)
 
-callback.register('bl_idcard:cb:getMugShot', function()
-    return utils.GetMugShot()
-end)
+callback.register('bl_idcard:cb:getMugShot', utils.GetMugShot)
 
 RegisterCommand('closeidcard', closeCardPopup, false)
 

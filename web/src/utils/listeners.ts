@@ -1,7 +1,7 @@
 import { Receive, Send } from "@enums/events"
 import { DebugEventCallback } from "@typings/events"
 import { ReceiveEvent, SendEvent } from "./eventsHandlers"
-import { convertImage } from "./imageToBase64"
+import { convertImage } from "./txdToBase64"
 import { TIDInfo, TIDTypes } from "@typings/id"
 import { ID_INFO, ID_TYPE, ID_TYPES } from "@stores/stores"
 import { get } from "svelte/store"
@@ -23,6 +23,8 @@ const AlwaysListened: DebugEventCallback[] = [
             };
 
             const idTypes = get(ID_TYPES);
+
+            data.imageURL = 'nui://bl_idcard/web/mugshots/' + data.imageURL + '.png'
 
             if (!idTypes) {
                 console.error('No ID Types config.');
@@ -52,7 +54,6 @@ const AlwaysListened: DebugEventCallback[] = [
     {
         action: Receive.requestBaseUrl,
         handler: async (txd: string) => {
-            console.log(txd)
             const baseUrl = await convertImage(txd);
             SendEvent(Send.resolveBaseUrl, baseUrl);
         }

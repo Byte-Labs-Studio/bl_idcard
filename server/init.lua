@@ -1,23 +1,29 @@
 local config = require "shared.config"
 local callback = lib.callback
 local core = Framework.core
+
+local function decodeBase(mugshot, itemImage)
+    local decodeBase64 = require'server.decoder'
+    decodeBase64(mugshot, itemImage)
+    return itemImage
+end
+
 ---comment
 ---@param source number
 ---@param licenses string | table The key in Config.items
-local function createLicense(source, licenses, rtn)
-
+local function createLicense(source, licenses)
     if type(licenses) == 'string' then
         licenses = {licenses}
     end
 
     local mugshot = callback.await('bl_idcard:cb:getMugShot', source)
-
     if not mugshot then
         print('Mugshot for license creation not found. Source: ' .. source .. ' | ' .. GetPlayerName(source))
         return
     end
 
     local player = core.GetPlayer(source)
+    local itemImage = decodeBase(mugshot, ('%s_mugshot'):format(player.id))
 
     local playerCharInfo = player.charinfo
     local charInfo = {
@@ -26,27 +32,17 @@ local function createLicense(source, licenses, rtn)
         firstName = playerCharInfo.firstname,
         lastName = playerCharInfo.lastname,
         sex = player.gender,
-        imageURL = mugshot
+        imageURL = itemImage
     }
 
     for _, license in ipairs(licenses) do
         local configType = config.items[license]
 
-
         if configType then
-            local idType = nil
-
-            if configType.genderIdType then
-                idType = configType.genderIdType[charInfo.sex]
-            else
-                idType = configType.idType
-            end
-
+            local idType = configType.genderIdType?[charInfo.sex] or configType.idType
             charInfo.idType = idType
             player.addItem(license, 1, charInfo)
-            if rtn then
-                return charInfo
-            end
+            return charInfo
         else
             print('License type not found in config: ' .. license)
         end
@@ -76,17 +72,25 @@ end)
 CreateThread(function()
     local items = config.items
     for k, v in pairs(items) do
-        core.RegisterUsableItem(k, function(source, _, metadata)
-            local idType = metadata?.idType 
+        core.RegisterUsableItem(k, function(source, slotId, metadata)
+            local idType = metadata?.idType
+            local player
             if not idType then
-                local player = core.GetPlayer(source)
+                player = core.GetPlayer(source)
                 player.removeItem(k, 1)
-                metadata = createLicense(source, k, true)
+                metadata = createLicense(source, k)
             end
 
             local target = callback.await('bl_idcard:use', source, k)
 
             if target then
+                local base64Code = metadata.imageURL
+                if base64Code and base64Code:find("data:image/png;base64") then
+                    player = player or core.GetPlayer(source)
+                    local itemImage = decodeBase(base64Code, ('%s_mugshot'):format(player.id))
+                    metadata.imageURL = itemImage
+                    player.setMetaData(slotId, base64Code)
+                end
                 TriggerClientEvent('bl_idcard:open', target, metadata)
             end
         end)

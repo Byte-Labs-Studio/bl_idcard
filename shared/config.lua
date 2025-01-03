@@ -9,7 +9,6 @@ return {
                 male = 'male_id'
             }
         },
-        
         ['driver_license'] = {
             prop = `prop_franklin_dl`,
             idType = 'driver_license'
