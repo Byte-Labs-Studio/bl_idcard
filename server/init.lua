@@ -1,6 +1,7 @@
 local config = require "shared.config"
 local callback = lib.callback
 local core = Framework.core
+local unSavedMugshots = {}
 
 local function decodeBase(mugshot, itemImage)
     local decodeBase64 = require'server.decoder'
@@ -25,6 +26,7 @@ local function createLicense(source, licenses)
     local player = core.GetPlayer(source)
     local itemImage = decodeBase(mugshot, ('%s_mugshot'):format(player.id))
 
+    unSavedMugshots[itemImage] = mugshot
     local playerCharInfo = player.charinfo
     local charInfo = {
         id = player.id,
@@ -84,13 +86,16 @@ CreateThread(function()
             local target = callback.await('bl_idcard:use', source, k)
 
             if target then
-                local base64Code = metadata.imageURL
+                local base64Code = metadata?.imageURL
                 if base64Code and base64Code:find("data:image/png;base64") then
                     player = player or core.GetPlayer(source)
                     local itemImage = decodeBase(base64Code, ('%s_mugshot'):format(player.id))
                     metadata.imageURL = itemImage
+                    unSavedMugshots[itemImage] = base64Code
                     player.setMetaData(slotId, base64Code)
                 end
+
+                metadata.imageURL = unSavedMugshots[metadata.imageURL] or metadata.imageURL
                 TriggerClientEvent('bl_idcard:open', target, metadata)
             end
         end)

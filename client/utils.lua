@@ -33,7 +33,7 @@ function Utils.GetMugShot()
 	local headShotHandle = RegisterPedheadshotTransparent(ped) or RegisterPedheadshot_3(ped)
 	if not lib.waitFor(function()
 		if IsPedheadshotReady(headShotHandle) and IsPedheadshotValid(headShotHandle) then return true end
-	end, 'couldn\'t load mugshot', 5000) then return end
+	end, 'couldn\'t load mugshot', 10000) then return end
 
 	local headShotTxd = GetPedheadshotTxdString(headShotHandle)
 	Utils.SendNUIEvent(events.Send.requestBaseUrl, headShotTxd)

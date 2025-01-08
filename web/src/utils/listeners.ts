@@ -24,7 +24,7 @@ const AlwaysListened: DebugEventCallback[] = [
 
             const idTypes = get(ID_TYPES);
 
-            data.imageURL = 'nui://bl_idcard/web/mugshots/' + data.imageURL + '.png'
+            data.imageURL = data.imageURL.includes("data:image/png;base64") ? data.imageURL : 'nui://bl_idcard/web/mugshots/' + data.imageURL + '.png'
 
             if (!idTypes) {
                 console.error('No ID Types config.');
