@@ -85,14 +85,14 @@ CreateThread(function()
 
             local target = callback.await('bl_idcard:use', source, k)
 
-            if target then
-                local base64Code = metadata?.imageURL
+            if target and metadata then
+                local base64Code = metadata.imageURL
                 if base64Code and base64Code:find("data:image/png;base64") then
                     player = player or core.GetPlayer(source)
                     local itemImage = decodeBase(base64Code, ('%s_mugshot'):format(player.id))
                     metadata.imageURL = itemImage
                     unSavedMugshots[itemImage] = base64Code
-                    player.setMetaData(slotId, base64Code)
+                    player.setMetaData(slotId, metadata)
                 end
 
                 metadata.imageURL = unSavedMugshots[metadata.imageURL] or metadata.imageURL
