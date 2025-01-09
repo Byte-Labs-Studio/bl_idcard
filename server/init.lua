@@ -41,7 +41,8 @@ local function createLicense(source, licenses)
         local configType = config.items[license]
 
         if configType then
-            local idType = configType.genderIdType?[charInfo.sex] or configType.idType
+            local idType = configType.genderIdType and configType.genderIdType[charInfo.sex] or configType.idType
+
             charInfo.idType = idType
             player.addItem(license, 1, charInfo)
             return charInfo
@@ -75,6 +76,7 @@ CreateThread(function()
     local items = config.items
     for k, v in pairs(items) do
         core.RegisterUsableItem(k, function(source, slotId, metadata)
+
             local idType = metadata?.idType
             local player
             if not idType then
