@@ -35,6 +35,11 @@ RegisterNUICallback('photo', function(body, cb)
     photo.resolve(body)
 end)
 
+RegisterNUICallback('photoReady', function(_, cb)
+    photo.markReady()
+    cb(1)
+end)
+
 lib.callback.register(event('client:photo'), photo.capture)
 
 AddStateBagChangeHandler(STATE, nil, function(bagName, _, value)

@@ -394,7 +394,9 @@ function shows.use(src, name, slot)
         notify(src, locale('notify.issued', cards.label(name)), 'success')
     end
 
-    if not shows.free(src) then return end
+    local photoId = cards.photoId(metadata, src)
+    local current = bridge.getSlot(src, slot)
+    if not current or current.name ~= name or current.metadata.cardId ~= metadata.cardId or not shows.free(src) then return end
 
     local token = lib.string.random('................')
 
@@ -407,7 +409,7 @@ function shows.use(src, name, slot)
         slot = slot,
         cardId = metadata.cardId,
         metadata = metadata,
-        photoId = cards.photoId(metadata),
+        photoId = photoId,
         card = cards.payload(name, metadata),
         pose = 'hold',
         back = false,
@@ -533,7 +535,7 @@ end
 
 ---@param src integer
 ---@param token string
----@param photoId integer
+---@param photoId integer|string
 ---@return { ok: boolean, reason?: string, photo?: string }
 function shows.photo(src, token, photoId)
     local show = active[token]
@@ -543,7 +545,7 @@ function shows.photo(src, token, photoId)
 
     local budget = photoBudgets[src]
     local holder = show.holder
-    local photo = photos.get(photoId)
+    local photo = type(photoId) == 'number' and photos.get(photoId) or cards.legacyPhoto(show.metadata)
     if active[token] ~= show or show.holder ~= holder or photoBudgets[src] ~= budget then return { ok = false, reason = 'not_found' } end
 
     if not near(src, holder, config.tolerance.view) then return { ok = false, reason = 'too_far' } end

@@ -39,7 +39,7 @@ local slots = {}
 local holders = {}
 ---@type table<integer, IdCardVisual>
 local active = {}
----@type table<string, { holder: integer, card: table, photoId: integer? }>
+---@type table<string, { holder: integer, card: table, photoId: integer|string? }>
 local cardData = {}
 ---@type table<string, integer>
 local failedAt = {}
@@ -85,7 +85,7 @@ end
 
 ---@param token string
 ---@param serverId integer
----@return { holder: integer, card: table, photoId: integer? }?, string?
+---@return { holder: integer, card: table, photoId: integer|string? }?, string?
 local function fetchCard(token, serverId)
     local cached = cardData[token]
     if cached and cached.holder == serverId then return cached end
@@ -104,7 +104,9 @@ local function fetchCard(token, serverId)
         return nil, type(result) == 'table' and result.reason or nil
     end
 
-    cardData[token] = { holder = serverId, card = result.card, photoId = math.tointeger(result.photoId) }
+    local photoId = type(result.photoId) == 'string' and result.photoId or math.tointeger(result.photoId)
+
+    cardData[token] = { holder = serverId, card = result.card, photoId = photoId }
 
     return cardData[token]
 end

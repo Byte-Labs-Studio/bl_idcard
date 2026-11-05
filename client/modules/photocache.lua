@@ -5,16 +5,16 @@ local photocache = {}
 local PHOTO_EVENT <const> = ('%s:server:photo'):format(cache.resource)
 local RETRY_MS <const> = 3000
 
----@type table<integer, string>
+---@type table<integer|string, string>
 local entries = {}
----@type integer[]
+---@type (integer|string)[]
 local order = {}
----@type table<integer, promise>
+---@type table<integer|string, promise>
 local loading = {}
----@type table<integer, integer>
+---@type table<integer|string, integer>
 local failedAt = {}
 
----@param id integer
+---@param id integer|string
 local function touch(id)
     for i = #order, 1, -1 do
         if order[i] == id then
@@ -28,7 +28,7 @@ local function touch(id)
     order[#order + 1] = id
 end
 
----@param id integer
+---@param id integer|string
 ---@param photo string
 local function remember(id, photo)
     entries[id] = photo
@@ -40,14 +40,14 @@ local function remember(id, photo)
 
 end
 
----@param id integer
+---@param id integer|string
 ---@return string?
 function photocache.peek(id)
     return entries[id]
 end
 
 ---@param token string
----@param id integer
+---@param id integer|string
 ---@return string?
 function photocache.get(token, id)
     local cached = entries[id]

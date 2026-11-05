@@ -60,10 +60,17 @@ lib.callback.register(event('server:card'), function(src, token)
 end)
 
 lib.callback.register(event('server:photo'), function(src, token, photoId)
-    if type(photoId) ~= 'number' or photoId ~= photoId or photoId < 1 or photoId > 4294967295 then return { ok = false, reason = 'bad_request' } end
+    if type(photoId) == 'number' then
+        if photoId ~= photoId or photoId < 1 or photoId > 4294967295 then return { ok = false, reason = 'bad_request' } end
 
-    photoId = math.tointeger(photoId)
-    if type(token) ~= 'string' or #token ~= TOKEN_LENGTH or not photoId or photoId < 1 then return { ok = false, reason = 'bad_request' } end
+        photoId = math.tointeger(photoId)
+        if not photoId then return { ok = false, reason = 'bad_request' } end
+
+    elseif type(photoId) ~= 'string' or #photoId < 8 or #photoId > 16 or not photoId:match('^[%w]+$') then
+        return { ok = false, reason = 'bad_request' }
+    end
+
+    if type(token) ~= 'string' or #token ~= TOKEN_LENGTH then return { ok = false, reason = 'bad_request' } end
 
     if not shows.photoBudget(src) then return { ok = false, reason = 'cooldown' } end
 
@@ -98,7 +105,16 @@ local function createLicense(src, licenses)
 
     end
 
-    return first
+    if not first then return end
+
+    local result = {}
+
+    for key, value in pairs(first) do result[key] = value end
+
+    local ok, image = pcall(function() return photos.get(first.photoId) or cards.legacyPhoto(first) end)
+    if ok and image then result.imageURL = image end
+
+    return result
 end
 
 exports('createLicense', createLicense)

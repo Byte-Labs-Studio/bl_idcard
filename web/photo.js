@@ -56,3 +56,23 @@ window.addEventListener('message', (event) => {
   if (typeof data.source === 'string' && data.source.startsWith('data:image/')) capture(data.id, data.source);
   else if (typeof data.txd === 'string') capture(data.id, `https://nui-img/${data.txd}/${data.txd}?t=${Date.now()}`);
 });
+
+const ready = (attempt = 0) => {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 1000);
+  fetch(`https://${resource}/photoReady`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json; charset=UTF-8' },
+    body: '{}',
+    signal: controller.signal,
+  })
+    .then((response) => {
+      if (!response.ok) throw new Error('photo not ready');
+    })
+    .catch(() => {
+      if (attempt < 19) setTimeout(() => ready(attempt + 1), 250);
+    })
+    .finally(() => clearTimeout(timeout));
+};
+
+ready();

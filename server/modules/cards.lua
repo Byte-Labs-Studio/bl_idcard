@@ -8,6 +8,7 @@ local cards = {}
 
 local YEAR <const> = 365 * 24 * 60 * 60
 local PHOTO_EVENT <const> = ('%s:client:photo'):format(cache.resource)
+local LEGACY_FIELDS <const> = { 'imageURL', 'mugShot', 'mugshot', 'photo' }
 
 ---@type table<integer, true>
 local locked = {}
@@ -42,19 +43,56 @@ local function capturePhoto(src, source)
 
 end
 
+---@param metadata table
+---@return string?
+local function originalPhoto(metadata)
+    local previous = photos.previous(metadata.cardId)
+    if previous then return previous end
+
+    for i = 1, #LEGACY_FIELDS do
+        local value = metadata[LEGACY_FIELDS[i]]
+        if type(value) == 'string' and value ~= '' then return value end
+
+    end
+
+end
+
+---@param src integer?
+---@param value any
+---@return integer?
+local function importPhoto(src, value)
+    local original = photos.legacy(value)
+    if not original then return end
+
+    local photoId = photos.store(original, true)
+    if photoId or not src or not original:find('^data:image/') then return photoId end
+
+    local converted = capturePhoto(src, original)
+
+    return converted and photos.store(converted) or nil
+end
+
 ---@param src integer
 ---@param citizenid string
 ---@param retake? boolean
----@return integer?
+---@return integer?, string?
 local function currentPhoto(src, citizenid, retake)
     local photoId = not retake and photos.current(citizenid)
     if photoId then return photoId end
 
-    local data = capturePhoto(src)
-    photoId = data and photos.store(data)
+    local previous = not retake and photos.previous(nil, citizenid)
+
+    if previous then
+        photoId = importPhoto(src, previous)
+        if not photoId then return nil, previous end
+
+    else
+        local data = capturePhoto(src)
+        photoId = data and photos.store(data)
+    end
 
     if photoId then
-        photos.setCurrent(citizenid, photoId)
+        photos.setCurrent(citizenid, photoId, previous and true or false)
 
         return photoId
     end
@@ -110,7 +148,7 @@ local function issue(src, name)
     local metadata = finish(name, base)
     if not bridge.canCarry(src, name, metadata) then return end
 
-    metadata.photoId = currentPhoto(src, metadata.id, config.photos.retakeOnIssue)
+    metadata.photoId, metadata.imageURL = currentPhoto(src, metadata.id, config.photos.retakeOnIssue)
 
     if not bridge.addItem(src, name, metadata) then return end
 
@@ -137,6 +175,7 @@ local function stamp(src, name, slot)
     local current = blankSlot(src, name, slot)
     if not current then return end
 
+    local snapshot = lib.table.deepclone(current)
     local fresh = character(src, name)
     if not fresh then return end
 
@@ -155,25 +194,37 @@ local function stamp(src, name, slot)
     finish(name, merged)
 
     local citizenid = merged.id or fresh.id
-    local old = photos.legacy(current.imageURL or current.mugShot)
-    local converted = old and capturePhoto(src, old)
-    local photoId = converted and photos.store(converted)
+    local original = originalPhoto(current)
+    local photoId = original and importPhoto(src, original)
 
-    if not photoId then
-        photoId = citizenid == fresh.id and currentPhoto(src, citizenid) or photos.current(citizenid)
-    elseif not photos.current(citizenid) then
-        photos.setCurrent(citizenid, photoId)
+    if not photoId and not original then
+        if tostring(citizenid) == tostring(fresh.id) then
+            photoId, merged.imageURL = currentPhoto(src, citizenid)
+        else
+            photoId = photos.current(citizenid)
+            merged.imageURL = not photoId and photos.previous(nil, citizenid) or nil
+        end
+
+    elseif photoId then
+        photos.setCurrent(citizenid, photoId, true)
     end
 
-    if not blankSlot(src, name, slot) then return end
+    local live = blankSlot(src, name, slot)
+    if not live or not lib.table.matches(live, snapshot) then return end
 
     merged.photoId = photoId
-    merged.imageURL = nil
-    merged.mugShot = nil
+
+    if not photos.link(merged.cardId, citizenid, photoId) then return end
+
+    live = blankSlot(src, name, slot)
+    if not live or not lib.table.matches(live, snapshot) then return end
+
+    if photoId then
+        for i = 1, #LEGACY_FIELDS do merged[LEGACY_FIELDS[i]] = nil end
+
+    end
 
     if not bridge.setMetadata(src, slot, merged) then return end
-
-    photos.link(merged.cardId, citizenid, photoId)
 
     return merged
 end
@@ -200,7 +251,7 @@ end
 ---@param name string
 ---@return table?
 function cards.issue(src, name)
-    if not shared.items[name] or locked[src] then return end
+    if not shared.items[name] or not photos.ready() or locked[src] then return end
 
     locked[src] = true
 
@@ -218,7 +269,7 @@ end
 ---@param slot integer
 ---@return table?
 function cards.stamp(src, name, slot)
-    if locked[src] then return end
+    if not photos.ready() or locked[src] then return end
 
     locked[src] = true
 
@@ -232,25 +283,45 @@ function cards.stamp(src, name, slot)
 end
 
 ---@param metadata table
----@return integer?
-function cards.photoId(metadata)
+---@return string?
+function cards.legacyPhoto(metadata)
+    return photos.legacy(originalPhoto(metadata))
+end
+
+---@param metadata table
+---@param src integer?
+---@return integer|string?
+function cards.photoId(metadata, src)
+    if not photos.ready() then return end
+
     local photoId, known = photos.forCard(metadata.cardId)
     if photoId then return photoId end
 
     local citizenid = metadata.id or metadata.citizenid
+    local original = originalPhoto(metadata)
 
-    photoId = photos.current(citizenid)
+    if original then
+        photoId = importPhoto(src, original)
+        if not photoId then return metadata.cardId end
+
+    else
+        photoId = photos.current(citizenid)
+    end
 
     if not photoId then return end
 
     if known then photos.fill(metadata.cardId, photoId) else photos.link(metadata.cardId, citizenid, photoId) end
 
-    return photoId
+    local linked = photos.forCard(metadata.cardId)
+
+    return linked
 end
 
 ---@param src integer
 ---@return integer?
 function cards.retake(src)
+    if not photos.ready() then return end
+
     local player = bridge.character(src)
     if not player or not player.id then return end
 

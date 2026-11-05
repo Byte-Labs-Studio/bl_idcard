@@ -1,6 +1,7 @@
 local config = require 'configs.server'
 
 local photos = {}
+local initialized = false
 
 local resource = cache.resource
 local provider = require(('server.storage.%s'):format(config.photos.provider or 'mysql'))
@@ -23,6 +24,15 @@ local loading = {}
 local decodeMap = {}
 
 for i = 1, #BASE64 do decodeMap[BASE64:byte(i)] = i - 1 end
+
+function photos.markReady()
+    initialized = true
+end
+
+---@return boolean
+function photos.ready()
+    return pcall(lib.waitFor, function() return initialized or nil end, nil, 10000)
+end
 
 ---@param id integer
 ---@param value string|false
@@ -167,7 +177,7 @@ function photos.inspect(data, legacy)
 
     local padding = body:sub(-2) == '==' and 2 or body:sub(-1) == '=' and 1 or 0
     local bytes = #body // 4 * 3 - padding
-    if bytes < MIN_BYTES or bytes > limit then return end
+    if bytes < (legacy and 24 or MIN_BYTES) or bytes > limit then return end
 
     local head = decode(body:sub(1, HEADER_CHARS))
     local width, height = webpSize(head, bytes)
@@ -194,10 +204,11 @@ function photos.inspect(data, legacy)
 end
 
 ---@param data string
+---@param legacy? boolean
 ---@return integer?
-function photos.store(data)
-    local image = photos.inspect(data)
-    if not image then return end
+function photos.store(data, legacy)
+    local image = photos.inspect(data, legacy)
+    if not image or image.bytes > MAX_BYTES then return end
 
     local id = provider.put(image.body, image.mime, image.bytes)
     if id then remember(id, ('data:%s;base64,%s'):format(image.mime, image.body)) end
@@ -223,7 +234,7 @@ function photos.get(id)
     local ok, body, mime = pcall(provider.get, id)
     local value = ok and body and mime and ('data:%s;base64,%s'):format(mime, body) or nil
 
-    remember(id, value or false)
+    if value then remember(id, value) end
     loading[id] = nil
     pending:resolve(value)
 
@@ -233,6 +244,8 @@ end
 ---@param citizenid string?
 ---@return integer?
 function photos.current(citizenid)
+    if type(citizenid) == 'number' and math.tointeger(citizenid) then citizenid = tostring(citizenid) end
+
     if type(citizenid) ~= 'string' or citizenid == '' then return end
 
     return MySQL.scalar.await('SELECT `photo_id` FROM `bl_idcard_profiles` WHERE `citizenid` = ?', { citizenid })
@@ -240,10 +253,13 @@ end
 
 ---@param citizenid string
 ---@param photoId integer
-function photos.setCurrent(citizenid, photoId)
+---@param preserveCurrent? boolean
+function photos.setCurrent(citizenid, photoId, preserveCurrent)
     MySQL.insert.await(
-        'INSERT INTO `bl_idcard_profiles` (`citizenid`, `photo_id`) VALUES (?, ?) ON DUPLICATE KEY UPDATE `photo_id` = VALUES(`photo_id`)',
-        { citizenid, photoId }
+        preserveCurrent
+            and 'INSERT INTO `bl_idcard_profiles` (`citizenid`, `photo_id`) VALUES (?, ?) ON DUPLICATE KEY UPDATE `photo_id` = `photo_id`'
+            or 'INSERT INTO `bl_idcard_profiles` (`citizenid`, `photo_id`) VALUES (?, ?) ON DUPLICATE KEY UPDATE `photo_id` = VALUES(`photo_id`)',
+        { tostring(citizenid), photoId }
     )
 end
 
@@ -251,6 +267,7 @@ end
 ---@return boolean
 function photos.cardExists(cardId)
     return MySQL.scalar.await('SELECT 1 FROM `bl_idcard_cards` WHERE `card_id` = ?', { cardId }) ~= nil
+        or provider.legacy(cardId) ~= nil
 end
 
 ---@param cardId string
@@ -260,7 +277,7 @@ end
 function photos.link(cardId, citizenid, photoId)
     return pcall(MySQL.insert.await,
         'INSERT INTO `bl_idcard_cards` (`card_id`, `citizenid`, `photo_id`) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE `card_id` = `card_id`',
-        { cardId, citizenid or '', photoId })
+        { cardId, citizenid and tostring(citizenid) or '', photoId })
 end
 
 ---@param cardId string
@@ -287,7 +304,20 @@ function photos.legacy(imageURL)
 
     if photos.inspect(imageURL, true) then return imageURL end
 
-    local name = imageURL:match('([%w_%-]+)%.png$') or imageURL:match('^([%w_%-]+)$')
+    local localPrefix = ('https://cfx-nui-%s/web/mugshots/'):format(resource)
+    local oldPrefix = ('nui://%s/web/mugshots/'):format(resource)
+
+    if imageURL:sub(1, #localPrefix) == localPrefix then
+        imageURL = imageURL:sub(#localPrefix + 1)
+    elseif imageURL:sub(1, #oldPrefix) == oldPrefix then
+        imageURL = imageURL:sub(#oldPrefix + 1)
+    elseif #imageURL <= 2048 and imageURL:match('^https://[%w%-%.]+/[^%s%c<>"\\]*$') then
+        return imageURL
+    end
+
+    local name = imageURL:match('([^/\\]+)%.png$') or imageURL:match('^([^/\\]+)$')
+    if not name or #name > 128 or name:find('[^%w_%-:]') then return end
+
     local handle = name and io.open(('%s/web/mugshots/%s.png'):format(GetResourcePath(resource), name), 'rb')
     if not handle then return end
 
@@ -301,8 +331,22 @@ function photos.legacy(imageURL)
 
 end
 
+---@param cardId string?
+---@param citizenid string?
+---@return string?
+function photos.previous(cardId, citizenid)
+    if type(cardId) == 'string' and cardId ~= '' then return provider.legacy(cardId) end
+
+    if type(citizenid) == 'number' and math.tointeger(citizenid) then citizenid = tostring(citizenid) end
+
+    if type(citizenid) == 'string' and citizenid ~= '' then return provider.legacy(nil, citizenid) end
+
+end
+
 ---@return integer
 function photos.collect()
+    if not photos.ready() then return 0 end
+
     local settings = config.photos.cleanup or {}
     local total = 0
 

@@ -7,6 +7,11 @@ local MAX_SOURCE <const> = 768 * 1024
 ---@type table<integer, promise>
 local pending = {}
 local nextId = 0
+local ready = false
+
+function photo.markReady()
+    ready = true
+end
 
 ---@param handle integer
 ---@return boolean
@@ -44,6 +49,9 @@ end
 ---@param source? string
 ---@return string?
 function photo.capture(source)
+    local ok = pcall(lib.waitFor, function() return ready or nil end, nil, NUI_TIMEOUT)
+    if not ok then return end
+
     if type(source) == 'string' then
         if #source > MAX_SOURCE or not source:find('^data:image/') then return end
 

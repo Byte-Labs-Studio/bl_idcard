@@ -12,6 +12,8 @@ CreateThread(function()
 
     end
 
+    photos.markReady()
+
     local hours = (config.photos.cleanup or {}).intervalHours or 0
     if hours <= 0 then return end
 
