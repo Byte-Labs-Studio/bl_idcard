@@ -1,5 +1,6 @@
 local cards = require 'server.modules.cards'
 local shows = require 'server.modules.shows'
+local photos = require 'server.modules.photos'
 
 local resource = cache.resource
 local POSES <const> = { hold = true, flash = true, inspect = true }
@@ -58,6 +59,19 @@ lib.callback.register(event('server:card'), function(src, token)
     return shows.card(src, token)
 end)
 
+lib.callback.register(event('server:photo'), function(src, token, photoId)
+    photoId = math.tointeger(photoId)
+    if type(token) ~= 'string' or #token ~= TOKEN_LENGTH or not photoId or photoId < 1 then return { ok = false, reason = 'bad_request' } end
+
+    if not shows.throttle(src, ('photo:%s'):format(photoId), 1000) then return { ok = false, reason = 'cooldown' } end
+
+    return shows.photo(src, token, photoId)
+end)
+
+exports('updatePhoto', function(src)
+    return cards.retake(src)
+end)
+
 exports('issueCard', function(src, name)
     return cards.issue(src, name) ~= nil
 end)
@@ -107,6 +121,34 @@ lib.addCommand('giveidcard', {
         local ok = cards.issue(args.target, name) ~= nil
         if src > 0 then shows.notify(src, locale(ok and 'notify.card_issued' or 'notify.card_not_issued'), ok and 'success' or 'error') end
 
+    end)
+
+end)
+
+lib.addCommand('idcardphoto', {
+    help = locale('command.idcardphoto'),
+    params = {
+        { name = 'target', type = 'playerId', help = locale('command.target') },
+    },
+    restricted = 'group.admin',
+}, function(src, args)
+    CreateThread(function()
+        local ok = cards.retake(args.target) ~= nil
+        if src > 0 then shows.notify(src, locale(ok and 'notify.photo_updated' or 'notify.photo_failed'), ok and 'success' or 'error') end
+
+    end)
+
+end)
+
+lib.addCommand('idcardcleanup', {
+    help = locale('command.idcardcleanup'),
+    restricted = 'group.admin',
+}, function(src)
+    CreateThread(function()
+        local removed = photos.collect()
+        if src > 0 then shows.notify(src, locale('notify.cleanup_done', removed), 'success') end
+
+        lib.print.info(('removed %d unused photos'):format(removed))
     end)
 
 end)

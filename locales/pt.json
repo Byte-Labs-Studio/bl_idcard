@@ -16,7 +16,10 @@
     "unknown_card": "Tipo de cartão desconhecido.",
     "card_issued": "Cartão emitido.",
     "card_not_issued": "Não foi possível emitir o cartão.",
-    "gave_away": "Entregaste o teu %s."
+    "gave_away": "Entregaste o teu %s.",
+    "photo_updated": "Foto do documento atualizada.",
+    "photo_failed": "Não foi possível tirar a foto.",
+    "cleanup_done": "%s fotos sem uso removidas."
   },
   "prompt": {
     "show": "Mostrar",
@@ -39,7 +42,9 @@
   "command": {
     "issueid": "Emitir um cartão de identificação a um jogador",
     "target": "ID do jogador no servidor",
-    "card": "Nome do item do cartão"
+    "card": "Nome do item do cartão",
+    "idcardphoto": "Tirar de novo a foto do documento de um jogador",
+    "idcardcleanup": "Remover fotos de documento sem uso"
   },
   "metadata": {
     "first_name": "Nome",

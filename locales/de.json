@@ -16,7 +16,10 @@
     "unknown_card": "Unbekannter Ausweistyp.",
     "card_issued": "Ausweis ausgestellt.",
     "card_not_issued": "Ausweis konnte nicht ausgestellt werden.",
-    "gave_away": "Du hast deinen %s weggegeben."
+    "gave_away": "Du hast deinen %s weggegeben.",
+    "photo_updated": "Ausweisfoto aktualisiert.",
+    "photo_failed": "Foto konnte nicht aufgenommen werden.",
+    "cleanup_done": "%s ungenutzte Fotos gelöscht."
   },
   "prompt": {
     "show": "Zeigen",
@@ -39,7 +42,9 @@
   "command": {
     "issueid": "Einem Spieler einen Ausweis ausstellen",
     "target": "Server-ID des Spielers",
-    "card": "Item-Name des Ausweises"
+    "card": "Item-Name des Ausweises",
+    "idcardphoto": "Ausweisfoto eines Spielers neu aufnehmen",
+    "idcardcleanup": "Ungenutzte Ausweisfotos löschen"
   },
   "metadata": {
     "first_name": "Vorname",

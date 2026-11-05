@@ -16,7 +16,10 @@
     "unknown_card": "Tipo de tarjeta desconocido.",
     "card_issued": "Tarjeta emitida.",
     "card_not_issued": "No se pudo emitir la tarjeta.",
-    "gave_away": "Has entregado tu %s."
+    "gave_away": "Has entregado tu %s.",
+    "photo_updated": "Foto del carné actualizada.",
+    "photo_failed": "No se pudo tomar la foto.",
+    "cleanup_done": "Se borraron %s fotos sin usar."
   },
   "prompt": {
     "show": "Mostrar",
@@ -39,7 +42,9 @@
   "command": {
     "issueid": "Emitir una tarjeta de identidad a un jugador",
     "target": "ID del jugador en el servidor",
-    "card": "Nombre del item de la tarjeta"
+    "card": "Nombre del item de la tarjeta",
+    "idcardphoto": "Volver a tomar la foto del carné de un jugador",
+    "idcardcleanup": "Borrar fotos de carné sin usar"
   },
   "metadata": {
     "first_name": "Nombre",

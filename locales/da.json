@@ -16,7 +16,10 @@
     "unknown_card": "Ukendt korttype.",
     "card_issued": "Kort udstedt.",
     "card_not_issued": "Kortet kunne ikke udstedes.",
-    "gave_away": "Du gav dit %s væk."
+    "gave_away": "Du gav dit %s væk.",
+    "photo_updated": "ID-foto opdateret.",
+    "photo_failed": "Kunne ikke tage fotoet.",
+    "cleanup_done": "Fjernede %s ubrugte fotos."
   },
   "prompt": {
     "show": "Vis",
@@ -39,7 +42,9 @@
   "command": {
     "issueid": "Udsted et ID-kort til en spiller",
     "target": "Spillerens server-id",
-    "card": "Kortets item-navn"
+    "card": "Kortets item-navn",
+    "idcardphoto": "Tag et nyt ID-foto af en spiller",
+    "idcardcleanup": "Fjern ID-fotos som intet kort bruger"
   },
   "metadata": {
     "first_name": "Fornavn",

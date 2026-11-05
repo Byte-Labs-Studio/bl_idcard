@@ -2,6 +2,7 @@ local config = require 'configs.server'
 local shared = require 'configs.shared'
 local bridge = require 'bridge.server'
 local cards = require 'server.modules.cards'
+local photos = require 'server.modules.photos'
 
 local shows = {}
 
@@ -18,6 +19,7 @@ local WINDOW_SWAP_MS <const> = 820
 ---@field slot integer
 ---@field cardId string
 ---@field metadata table
+---@field photoId integer?
 ---@field card table
 ---@field pose string
 ---@field back boolean
@@ -383,6 +385,7 @@ function shows.use(src, name, slot)
         slot = slot,
         cardId = metadata.cardId,
         metadata = metadata,
+        photoId = cards.photoId(metadata),
         card = cards.payload(name, metadata),
         pose = 'hold',
         back = false,
@@ -496,14 +499,30 @@ end
 
 ---@param src integer
 ---@param token string
----@return { ok: boolean, reason?: string, holder?: integer, card?: table, cardId?: string, photo?: string }
+---@return { ok: boolean, reason?: string, holder?: integer, card?: table, cardId?: string, photoId?: integer }
 function shows.card(src, token)
     local show = active[token]
     if not show then return { ok = false, reason = 'not_found' } end
 
     if not near(src, show.holder, config.tolerance.view) then return { ok = false, reason = 'too_far' } end
 
-    return { ok = true, holder = show.holder, card = show.card, cardId = show.cardId, photo = cards.photo(show.metadata) }
+    return { ok = true, holder = show.holder, card = show.card, cardId = show.cardId, photoId = show.photoId }
+end
+
+---@param src integer
+---@param token string
+---@param photoId integer
+---@return { ok: boolean, reason?: string, photo?: string }
+function shows.photo(src, token, photoId)
+    local show = active[token]
+    if not show or not show.photoId or show.photoId ~= photoId then return { ok = false, reason = 'not_found' } end
+
+    if not near(src, show.holder, config.tolerance.view) then return { ok = false, reason = 'too_far' } end
+
+    local photo = photos.get(photoId)
+    if not photo then return { ok = false, reason = 'missing' } end
+
+    return { ok = true, photo = photo }
 end
 
 ---@param token string

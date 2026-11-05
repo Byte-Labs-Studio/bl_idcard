@@ -3,28 +3,38 @@ local config = require 'configs.server'
 local photos = {}
 
 local resource = cache.resource
-local MIN_LENGTH <const> = 200
-local MAX_LENGTH <const> = 512 * 1024
+local provider = require(('server.storage.%s'):format(config.photos.provider or 'mysql'))
+
+local MAX_BYTES <const> = 60 * 1024
+local MIN_BYTES <const> = 128
+local MAX_SIZE <const> = 256
+local MAX_LEGACY <const> = 512 * 1024
+local HEADER_CHARS <const> = 4096
 local CACHE_SIZE <const> = 64
-local FIVEMANAGE_URL <const> = 'https://api.fivemanage.com/api/v3/file/base64'
 local BASE64 <const> = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
 
----@type table<string, string|false>
-local cache = {}
----@type string[]
+---@type table<integer, string|false>
+local stored = {}
+---@type integer[]
 local order = {}
+---@type table<integer, promise>
+local loading = {}
+---@type table<integer, integer>
+local decodeMap = {}
 
----@param cardId string
----@param photo string|false
-local function remember(cardId, photo)
-    if cache[cardId] == nil then
-        order[#order + 1] = cardId
+for i = 1, #BASE64 do decodeMap[BASE64:byte(i)] = i - 1 end
 
-        if #order > CACHE_SIZE then cache[table.remove(order, 1)] = nil end
+---@param id integer
+---@param value string|false
+local function remember(id, value)
+    if stored[id] == nil then
+        order[#order + 1] = id
+
+        if #order > CACHE_SIZE then stored[table.remove(order, 1)] = nil end
 
     end
 
-    cache[cardId] = photo
+    stored[id] = value
 end
 
 ---@param data string
@@ -45,107 +55,229 @@ local function encode(data)
     return table.concat(out)
 end
 
----@param data any
----@return boolean
-local function isDataUri(data)
-    if type(data) ~= 'string' or #data < MIN_LENGTH or #data > MAX_LENGTH then return false end
+---@param body string
+---@return string
+local function decode(body)
+    local out = {}
 
-    local body = data:match('^data:image/webp;base64,(.+)$') or data:match('^data:image/png;base64,(.+)$')
-        or data:match('^data:image/jpeg;base64,(.+)$')
+    for i = 1, #body - 3, 4 do
+        local a, b = decodeMap[body:byte(i)], decodeMap[body:byte(i + 1)]
+        local c, d = decodeMap[body:byte(i + 2)], decodeMap[body:byte(i + 3)]
+        if not a or not b then break end
 
-    return body ~= nil and body:find('^[%w%+/]+=*$') ~= nil
-end
+        local n = (a << 18) | (b << 12) | ((c or 0) << 6) | (d or 0)
 
----@param data any
----@return boolean
-local function isUrl(data)
-    return type(data) == 'string' and #data <= 512 and data:find('^https://[%w%-%.]+/[%w%-%._~/%%]+$') ~= nil
-end
+        out[#out + 1] = string.char(n >> 16)
 
----@param data any
----@return boolean
-function photos.isValid(data)
-    return isDataUri(data) or isUrl(data)
-end
+        if c then out[#out + 1] = string.char((n >> 8) & 255) end
 
----@param photo string
----@param cardId string
----@return string?
-local function upload(photo, cardId)
-    local key = GetConvar('bl_idcard:fivemanage', '')
-    if key == '' then
-        lib.print.warn('photos.storage is "fivemanage" but the convar bl_idcard:fivemanage is not set; saving to the database')
+        if d then out[#out + 1] = string.char(n & 255) end
 
-        return
     end
 
-    local p = promise.new()
-
-    PerformHttpRequest(FIVEMANAGE_URL, function(status, body)
-        local ok, response = pcall(json.decode, body or '')
-        local url = ok and type(response) == 'table' and type(response.data) == 'table' and response.data.url
-
-        if status ~= 200 or not isUrl(url) then
-            lib.print.warn(('fivemanage upload failed (HTTP %s)'):format(status))
-            url = nil
-        end
-
-        p:resolve(url)
-    end, 'POST', json.encode({
-        base64 = photo,
-        filename = ('%s.%s'):format(cardId, photo:match('^data:image/(%a+);') or 'png'),
-        path = config.photos.fivemanagePath,
-    }), { ['Content-Type'] = 'application/json', ['Authorization'] = key })
-
-    return Citizen.Await(p)
+    return table.concat(out)
 end
 
----@param cardId string
----@return boolean
-function photos.exists(cardId)
-    if cache[cardId] then return true end
-
-    return MySQL.scalar.await('SELECT 1 FROM `bl_idcard_photos` WHERE `card_id` = ?', { cardId }) ~= nil
+---@param s string
+---@param i integer
+---@return integer
+local function u16be(s, i)
+    return (s:byte(i) << 8) | s:byte(i + 1)
 end
 
----@param cardId string
----@param citizenid string
----@param photo string
+---@param s string
+---@param i integer
+---@return integer
+local function u32be(s, i)
+    return (s:byte(i) << 24) | (s:byte(i + 1) << 16) | (s:byte(i + 2) << 8) | s:byte(i + 3)
+end
+
+---@param s string
+---@param i integer
+---@return integer
+local function u24le(s, i)
+    return s:byte(i) | (s:byte(i + 1) << 8) | (s:byte(i + 2) << 16)
+end
+
+---@param s string
+---@param i integer
+---@return integer
+local function u32le(s, i)
+    return u24le(s, i) | (s:byte(i + 3) << 24)
+end
+
+---@param head string
+---@param bytes integer
+---@return integer?, integer?
+local function webpSize(head, bytes)
+    if #head < 30 or head:sub(1, 4) ~= 'RIFF' or head:sub(9, 12) ~= 'WEBP' or u32le(head, 5) + 8 ~= bytes then return end
+
+    local chunk = head:sub(13, 16)
+
+    if chunk == 'VP8X' then return u24le(head, 25) + 1, u24le(head, 28) + 1 end
+
+    if chunk == 'VP8 ' and head:sub(24, 26) == '\157\1\42' then
+        return (head:byte(27) | (head:byte(28) << 8)) & 0x3fff, (head:byte(29) | (head:byte(30) << 8)) & 0x3fff
+    end
+
+    if chunk == 'VP8L' and head:byte(21) == 0x2f then
+        local bits = u32le(head, 22)
+
+        return (bits & 0x3fff) + 1, ((bits >> 14) & 0x3fff) + 1
+    end
+
+end
+
+---@param head string
+---@return integer?, integer?
+local function jpegSize(head)
+    if head:sub(1, 3) ~= '\255\216\255' then return end
+
+    local i = 3
+
+    while i + 8 <= #head do
+        if head:byte(i) ~= 0xff then return end
+
+        local marker = head:byte(i + 1)
+
+        if marker == 0xc0 or marker == 0xc1 or marker == 0xc2 then return u16be(head, i + 7), u16be(head, i + 5) end
+
+        i = i + 2 + u16be(head, i + 2)
+    end
+
+end
+
+---@param head string
+---@return integer?, integer?
+local function pngSize(head)
+    if #head < 24 or head:sub(1, 8) ~= '\137PNG\r\n\26\n' or head:sub(13, 16) ~= 'IHDR' then return end
+
+    return u32be(head, 17), u32be(head, 21)
+end
+
+---@param data any
+---@param legacy? boolean
+---@return { body: string, mime: string, bytes: integer }?
+function photos.inspect(data, legacy)
+    local limit = legacy and MAX_LEGACY or MAX_BYTES
+    if type(data) ~= 'string' or #data > limit * 4 // 3 + 64 then return end
+
+    local body = data:match('^data:image/%a+;base64,([%w%+/]+=?=?)$')
+    if not body or #body % 4 ~= 0 then return end
+
+    local padding = body:sub(-2) == '==' and 2 or body:sub(-1) == '=' and 1 or 0
+    local bytes = #body // 4 * 3 - padding
+    if bytes < MIN_BYTES or bytes > limit then return end
+
+    local head = decode(body:sub(1, HEADER_CHARS))
+    local width, height = webpSize(head, bytes)
+    local mime = width and 'image/webp'
+
+    if not width then
+        width, height = jpegSize(head)
+        mime = width and 'image/jpeg'
+
+        if width and decode(body:sub(-4)):sub(-2) ~= '\255\217' then return end
+
+    end
+
+    if not width and legacy then
+        width, height = pngSize(head)
+        mime = width and 'image/png'
+    end
+
+    if not width or width < 1 or height < 1 then return end
+
+    if not legacy and (width > MAX_SIZE or height > MAX_SIZE) then return end
+
+    return { body = body, mime = mime, bytes = bytes }
+end
+
+---@param data string
+---@return integer?
+function photos.store(data)
+    local image = photos.inspect(data)
+    if not image then return end
+
+    local id = provider.put(image.body, image.mime, image.bytes)
+    if id then remember(id, ('data:%s;base64,%s'):format(image.mime, image.body)) end
+
+    return id
+end
+
+---@param id any
 ---@return string?
-function photos.save(cardId, citizenid, photo)
-    if not photos.isValid(photo) then return end
+function photos.get(id)
+    id = math.tointeger(tonumber(id))
+    if not id or id < 1 then return end
 
-    if config.photos.storage == 'fivemanage' and isDataUri(photo) then photo = upload(photo, cardId) or photo end
-
-    MySQL.insert.await(
-        'INSERT INTO `bl_idcard_photos` (`card_id`, `citizenid`, `photo`) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE `photo` = VALUES(`photo`)',
-        { cardId, citizenid, photo }
-    )
-    remember(cardId, photo)
-
-    return photo
-end
-
----@param cardId string
----@return string?
-function photos.get(cardId)
-    if type(cardId) ~= 'string' or cardId == '' then return end
-
-    local cached = cache[cardId]
+    local cached = stored[id]
     if cached ~= nil then return cached or nil end
 
-    local photo = MySQL.scalar.await('SELECT `photo` FROM `bl_idcard_photos` WHERE `card_id` = ?', { cardId })
-    remember(cardId, type(photo) == 'string' and photo or false)
+    local pending = loading[id]
+    if pending then return Citizen.Await(pending) end
 
-    return photo
+    pending = promise.new()
+    loading[id] = pending
+
+    local ok, body, mime = pcall(provider.get, id)
+    local value = ok and body and mime and ('data:%s;base64,%s'):format(mime, body) or nil
+
+    remember(id, value or false)
+    loading[id] = nil
+    pending:resolve(value)
+
+    return value
 end
 
 ---@param citizenid string?
----@return string?
-function photos.latest(citizenid)
+---@return integer?
+function photos.current(citizenid)
     if type(citizenid) ~= 'string' or citizenid == '' then return end
 
-    return MySQL.scalar.await('SELECT `photo` FROM `bl_idcard_photos` WHERE `citizenid` = ? ORDER BY `updated_at` DESC LIMIT 1', { citizenid })
+    return MySQL.scalar.await('SELECT `photo_id` FROM `bl_idcard_profiles` WHERE `citizenid` = ?', { citizenid })
+end
+
+---@param citizenid string
+---@param photoId integer
+function photos.setCurrent(citizenid, photoId)
+    MySQL.insert.await(
+        'INSERT INTO `bl_idcard_profiles` (`citizenid`, `photo_id`) VALUES (?, ?) ON DUPLICATE KEY UPDATE `photo_id` = VALUES(`photo_id`)',
+        { citizenid, photoId }
+    )
+end
+
+---@param cardId string
+---@return boolean
+function photos.cardExists(cardId)
+    return MySQL.scalar.await('SELECT 1 FROM `bl_idcard_cards` WHERE `card_id` = ?', { cardId }) ~= nil
+end
+
+---@param cardId string
+---@param citizenid string?
+---@param photoId integer?
+---@return boolean
+function photos.link(cardId, citizenid, photoId)
+    return pcall(MySQL.insert.await,
+        'INSERT INTO `bl_idcard_cards` (`card_id`, `citizenid`, `photo_id`) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE `card_id` = `card_id`',
+        { cardId, citizenid or '', photoId })
+end
+
+---@param cardId string
+---@param photoId integer
+function photos.fill(cardId, photoId)
+    MySQL.update.await('UPDATE `bl_idcard_cards` SET `photo_id` = ? WHERE `card_id` = ? AND `photo_id` IS NULL', { photoId, cardId })
+end
+
+---@param cardId string?
+---@return integer?, boolean
+function photos.forCard(cardId)
+    if type(cardId) ~= 'string' or cardId == '' then return nil, false end
+
+    local row = MySQL.single.await('SELECT `photo_id` FROM `bl_idcard_cards` WHERE `card_id` = ?', { cardId })
+    if not row then return nil, false end
+
+    return row.photo_id, true
 end
 
 ---@param imageURL any
@@ -153,20 +285,47 @@ end
 function photos.legacy(imageURL)
     if type(imageURL) ~= 'string' or imageURL == '' then return end
 
-    if photos.isValid(imageURL) then return imageURL end
+    if photos.inspect(imageURL, true) then return imageURL end
 
     local name = imageURL:match('([%w_%-]+)%.png$') or imageURL:match('^([%w_%-]+)$')
     local handle = name and io.open(('%s/web/mugshots/%s.png'):format(GetResourcePath(resource), name), 'rb')
     if not handle then return end
 
-    local file = handle:read(MAX_LENGTH)
+    local file = handle:read(MAX_LEGACY + 1)
     handle:close()
 
-    if not file or file:sub(2, 4) ~= 'PNG' then return end
+    if not file or #file > MAX_LEGACY then return end
 
     local photo = 'data:image/png;base64,' .. encode(file)
-    if isDataUri(photo) then return photo end
+    if photos.inspect(photo, true) then return photo end
 
+end
+
+---@return integer
+function photos.collect()
+    local settings = config.photos.cleanup or {}
+    local total = 0
+
+    for _ = 1, 20 do
+        local removed = provider.collect(settings.graceMinutes or 60, 500)
+        total = total + removed
+
+        if removed < 500 then break end
+
+    end
+
+    local kept = {}
+
+    for i = 1, #order do
+        local id = order[i]
+
+        if stored[id] then kept[#kept + 1] = id else stored[id] = nil end
+
+    end
+
+    order = kept
+
+    return total
 end
 
 return photos

@@ -16,7 +16,10 @@
     "unknown_card": "Unknown card type.",
     "card_issued": "Card issued.",
     "card_not_issued": "Could not issue the card.",
-    "gave_away": "You gave away your %s."
+    "gave_away": "You gave away your %s.",
+    "photo_updated": "ID photo updated.",
+    "photo_failed": "Could not take the photo.",
+    "cleanup_done": "Removed %s unused photos."
   },
   "prompt": {
     "show": "Show",
@@ -39,7 +42,9 @@
   "command": {
     "issueid": "Issue an ID card to a player",
     "target": "Player server id",
-    "card": "Card item name"
+    "card": "Card item name",
+    "idcardphoto": "Retake a player's ID photo",
+    "idcardcleanup": "Remove ID photos no card uses"
   },
   "metadata": {
     "first_name": "First name",

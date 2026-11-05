@@ -16,7 +16,10 @@
     "unknown_card": "Tundmatu kaardi tüüp.",
     "card_issued": "Kaart väljastatud.",
     "card_not_issued": "Kaarti ei saanud väljastada.",
-    "gave_away": "Andsid oma %s ära."
+    "gave_away": "Andsid oma %s ära.",
+    "photo_updated": "ID-foto uuendatud.",
+    "photo_failed": "Fotot ei õnnestunud teha.",
+    "cleanup_done": "Eemaldati %s kasutamata fotot."
   },
   "prompt": {
     "show": "Näita",
@@ -39,7 +42,9 @@
   "command": {
     "issueid": "Väljasta mängijale ID-kaart",
     "target": "Mängija serveri ID",
-    "card": "Kaardi eseme nimi"
+    "card": "Kaardi eseme nimi",
+    "idcardphoto": "Tee mängijale uus ID-foto",
+    "idcardcleanup": "Eemalda kasutamata ID-fotod"
   },
   "metadata": {
     "first_name": "Eesnimi",

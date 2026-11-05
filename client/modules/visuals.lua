@@ -1,4 +1,5 @@
 local config = require 'configs.client'
+local photocache = require 'client.modules.photocache'
 
 local visuals = {}
 
@@ -38,7 +39,7 @@ local slots = {}
 local holders = {}
 ---@type table<integer, IdCardVisual>
 local active = {}
----@type table<string, { holder: integer, card: table, photo: string? }>
+---@type table<string, { holder: integer, card: table, photoId: integer? }>
 local cardData = {}
 ---@type table<string, integer>
 local failedAt = {}
@@ -84,7 +85,7 @@ end
 
 ---@param token string
 ---@param serverId integer
----@return { holder: integer, card: table, photo: string? }?, string?
+---@return { holder: integer, card: table, photoId: integer? }?, string?
 local function fetchCard(token, serverId)
     local cached = cardData[token]
     if cached and cached.holder == serverId then return cached end
@@ -103,7 +104,7 @@ local function fetchCard(token, serverId)
         return nil, type(result) == 'table' and result.reason or nil
     end
 
-    cardData[token] = { holder = serverId, card = result.card, photo = type(result.photo) == 'string' and result.photo or nil }
+    cardData[token] = { holder = serverId, card = result.card, photoId = math.tointeger(result.photoId) }
 
     return cardData[token]
 end
@@ -182,6 +183,11 @@ local function build(serverId, state, ped)
     end
 
     slot.owner = serverId
+
+    if data.photoId and not photocache.peek(data.photoId) then
+        CreateThread(function() photocache.get(state.token, data.photoId) end)
+    end
+
     ensurePage(slot)
 
     if not waitFor(slot, 'pageReady', 5000) then
@@ -196,8 +202,26 @@ local function build(serverId, state, ped)
 
     if not pcall(lib.requestModel, slot.model) then return release(slot, serverId) end
 
+    local photo = data.photoId and photocache.peek(data.photoId)
+
     slot.rendered = false
-    slot.dui:sendMessage({ action = 'card', card = data.card, photo = data.photo })
+    slot.dui:sendMessage({ action = 'card', card = data.card, photo = photo })
+
+    if data.photoId and not photo then
+        local token, dui = state.token, slot.dui
+
+        CreateThread(function()
+            local loaded = photocache.get(token, data.photoId)
+            local now = holders[serverId]
+
+            if loaded and now and now.token == token and slot.dui == dui then
+                dui:sendMessage({ action = 'card', card = data.card, photo = loaded })
+            end
+
+        end)
+
+    end
+
     waitFor(slot, 'rendered', 3000)
     slot.dui:sendMessage({ action = 'tilt', x = 0, y = 0, glare = 0.15 })
 
@@ -371,6 +395,7 @@ function visuals.stop()
 
     end
 
+    photocache.clear()
 end
 
 return visuals

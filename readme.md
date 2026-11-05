@@ -12,7 +12,7 @@ Discord: [Byte Labs](https://discord.gg/fqsqSjZfxE)
 - **Look (F):** close-up camera. Move the mouse to tilt the card and catch the hologram, press Space to flip it to the back.
 - **Put away (Backspace).**
 - Up to 8 cards can be shown at the same time around a player, each with its own texture.
-- The photo is taken when the card is issued and stays on that card. Photos are stored in the database, or on [Fivemanage](https://fivemanage.com).
+- One photo per character, shared by all their cards and stored once in your database (binary, deduplicated). A card keeps the photo it was issued with, even after the character's photo is retaken.
 - Card number, issue and expiry dates, class and document number are generated on issue.
 - Server checks for range, ownership, dead or cuffed players and hand-over distance.
 - Four card designs (ID male, ID female, driver license, weapon license) and your own through `idTypes`.
@@ -24,7 +24,7 @@ Discord: [Byte Labs](https://discord.gg/fqsqSjZfxE)
 - [oxmysql](https://github.com/overextended/oxmysql)
 - OneSync
 
-The `bl_idcard_photos` table (`sql/schema.sql`) is created on first start.
+The tables in `sql/schema.sql` (`bl_idcard_photo_store`, `bl_idcard_cards`, `bl_idcard_profiles`) are created on first start.
 
 ## Installation
 1. Download
@@ -175,12 +175,12 @@ exports.bl_idcard:issueCard(source, 'weaponlicense')             -- returns true
 - `'give'`: the card moves into the other player's inventory for good.
 - `false`: no hand-over, only show.
 
-### Photos on Fivemanage
-Set `photos.storage = 'fivemanage'` in `configs/server.lua` and add your API key to your server.cfg (not in the resource):
-```
-set bl_idcard:fivemanage "YOUR_FIVEMANAGE_API_KEY"
-```
-New photos are uploaded to the `photos.fivemanagePath` folder, the URL is stored in the database and in the item's `imageURL`.
+### Photos
+- The first card a character gets takes their photo (a 256 px WebP headshot, about 8-15 KB). Every later card reuses that photo, so three licenses store one image.
+- `/idcardphoto [id]` (admin) or `exports.bl_idcard:updatePhoto(source)` retakes the character's photo, for example at a City Hall photo booth. New cards use the new photo; cards already issued keep theirs. Set `photos.retakeOnIssue = true` to take a new photo on every issue instead.
+- Images are stored as binary in `bl_idcard_photo_store`, once per unique image (SHA-256). Cards (`bl_idcard_cards`) and characters (`bl_idcard_profiles`) only reference a photo id. Nothing is stored in the item metadata.
+- A photo is only sent to a player who is in range of a card being shown, and each client keeps the last `photoCache` photos (`configs/client.lua`), so the same card is not downloaded twice.
+- Unused photos (no card or character points to them) are removed every `photos.cleanup.intervalHours` hours, or with `/idcardcleanup` (admin). Photos used by any card are never removed.
 
 ## Languages
 Prompts, notifications, the key bindings and the command help use ox_lib locales in `locales/`: ar, cs, da, de, en, es, et, fi, fr, it, nl, pl, pt, pt-br, ro, sk, sv, tr. Set the language with `setr ox:locale "de"` in your server.cfg. Card text (titles, agency, legal lines) is set per design in `idTypes`.

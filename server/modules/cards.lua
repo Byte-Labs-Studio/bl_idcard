@@ -1,3 +1,4 @@
+local config = require 'configs.server'
 local shared = require 'configs.shared'
 local card = require 'shared.card'
 local bridge = require 'bridge.server'
@@ -7,6 +8,7 @@ local cards = {}
 
 local YEAR <const> = 365 * 24 * 60 * 60
 local PHOTO_EVENT <const> = ('%s:client:photo'):format(cache.resource)
+
 ---@type table<integer, true>
 local locked = {}
 
@@ -24,7 +26,7 @@ end
 local function newCardId(prefix)
     for _ = 1, 20 do
         local id = ('%s%07d'):format(prefix, math.random(0, 9999999))
-        if not photos.exists(id) then return id end
+        if not photos.cardExists(id) then return id end
 
     end
 
@@ -32,11 +34,32 @@ local function newCardId(prefix)
 end
 
 ---@param src integer
+---@param source? string
 ---@return string?
-local function capturePhoto(src)
-    local ok, data = pcall(lib.callback.await, PHOTO_EVENT, src)
-    if ok and photos.isValid(data) then return data end
+local function capturePhoto(src, source)
+    local ok, data = pcall(lib.callback.await, PHOTO_EVENT, src, source)
+    if ok and photos.inspect(data) then return data end
 
+end
+
+---@param src integer
+---@param citizenid string
+---@param retake? boolean
+---@return integer?
+local function currentPhoto(src, citizenid, retake)
+    local photoId = not retake and photos.current(citizenid)
+    if photoId then return photoId end
+
+    local data = capturePhoto(src)
+    photoId = data and photos.store(data)
+
+    if photoId then
+        photos.setCurrent(citizenid, photoId)
+
+        return photoId
+    end
+
+    return photos.current(citizenid)
 end
 
 ---@param src integer
@@ -87,12 +110,11 @@ local function issue(src, name)
     local metadata = finish(name, base)
     if not bridge.canCarry(src, name, metadata) then return end
 
-    local photo = capturePhoto(src) or photos.latest(metadata.id)
-    local saved = photo and photos.save(metadata.cardId, metadata.id, photo)
-
-    if saved and saved:find('^https://') then metadata.imageURL = saved end
+    metadata.photoId = currentPhoto(src, metadata.id, config.photos.retakeOnIssue)
 
     if not bridge.addItem(src, name, metadata) then return end
+
+    photos.link(metadata.cardId, metadata.id, metadata.photoId)
 
     return metadata
 end
@@ -132,14 +154,26 @@ local function stamp(src, name, slot)
 
     finish(name, merged)
 
-    local photo = photos.legacy(current.imageURL or current.mugShot) or photos.latest(legacy and current.id or nil) or capturePhoto(src)
+    local citizenid = merged.id or fresh.id
+    local old = photos.legacy(current.imageURL or current.mugShot)
+    local converted = old and capturePhoto(src, old)
+    local photoId = converted and photos.store(converted)
+
+    if not photoId then
+        photoId = citizenid == fresh.id and currentPhoto(src, citizenid) or photos.current(citizenid)
+    elseif not photos.current(citizenid) then
+        photos.setCurrent(citizenid, photoId)
+    end
+
     if not blankSlot(src, name, slot) then return end
 
-    local saved = photo and photos.save(merged.cardId, merged.id or fresh.id, photo)
-
-    merged.imageURL = saved and saved:find('^https://') and saved or nil
+    merged.photoId = photoId
+    merged.imageURL = nil
+    merged.mugShot = nil
 
     if not bridge.setMetadata(src, slot, merged) then return end
+
+    photos.link(merged.cardId, citizenid, photoId)
 
     return merged
 end
@@ -198,9 +232,29 @@ function cards.stamp(src, name, slot)
 end
 
 ---@param metadata table
----@return string?
-function cards.photo(metadata)
-    return photos.get(metadata.cardId) or photos.legacy(metadata.imageURL or metadata.mugShot) or photos.latest(metadata.id or metadata.citizenid)
+---@return integer?
+function cards.photoId(metadata)
+    local photoId, known = photos.forCard(metadata.cardId)
+    if photoId then return photoId end
+
+    local citizenid = metadata.id or metadata.citizenid
+
+    photoId = photos.current(citizenid)
+
+    if not photoId then return end
+
+    if known then photos.fill(metadata.cardId, photoId) else photos.link(metadata.cardId, citizenid, photoId) end
+
+    return photoId
+end
+
+---@param src integer
+---@return integer?
+function cards.retake(src)
+    local player = bridge.character(src)
+    if not player or not player.id then return end
+
+    return currentPhoto(src, player.id, true)
 end
 
 cards.payload = card.payload

@@ -16,7 +16,10 @@
     "unknown_card": "Tipo di carta sconosciuto.",
     "card_issued": "Carta rilasciata.",
     "card_not_issued": "Impossibile rilasciare la carta.",
-    "gave_away": "Hai dato via il tuo %s."
+    "gave_away": "Hai dato via il tuo %s.",
+    "photo_updated": "Foto del documento aggiornata.",
+    "photo_failed": "Impossibile scattare la foto.",
+    "cleanup_done": "Eliminate %s foto non usate."
   },
   "prompt": {
     "show": "Mostra",
@@ -39,7 +42,9 @@
   "command": {
     "issueid": "Rilascia una carta d'identità a un giocatore",
     "target": "ID del giocatore sul server",
-    "card": "Nome dell'oggetto carta"
+    "card": "Nome dell'oggetto carta",
+    "idcardphoto": "Rifai la foto del documento di un giocatore",
+    "idcardcleanup": "Elimina le foto dei documenti non usate"
   },
   "metadata": {
     "first_name": "Nome",

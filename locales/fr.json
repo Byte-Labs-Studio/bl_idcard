@@ -16,7 +16,10 @@
     "unknown_card": "Type de carte inconnu.",
     "card_issued": "Carte délivrée.",
     "card_not_issued": "La carte n'a pas pu être délivrée.",
-    "gave_away": "Vous avez donné votre %s."
+    "gave_away": "Vous avez donné votre %s.",
+    "photo_updated": "Photo d'identité mise à jour.",
+    "photo_failed": "Impossible de prendre la photo.",
+    "cleanup_done": "%s photos inutilisées supprimées."
   },
   "prompt": {
     "show": "Montrer",
@@ -39,7 +42,9 @@
   "command": {
     "issueid": "Délivrer une carte d'identité à un joueur",
     "target": "ID serveur du joueur",
-    "card": "Nom de l'objet carte"
+    "card": "Nom de l'objet carte",
+    "idcardphoto": "Reprendre la photo d'identité d'un joueur",
+    "idcardcleanup": "Supprimer les photos d'identité inutilisées"
   },
   "metadata": {
     "first_name": "Prénom",

@@ -10,7 +10,11 @@ return {
     },
 
     photos = {
-        storage = 'database',
-        fivemanagePath = 'bl_idcard',
+        provider = 'mysql',
+        retakeOnIssue = false,
+        cleanup = {
+            intervalHours = 24,
+            graceMinutes = 60,
+        },
     },
 }

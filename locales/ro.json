@@ -16,7 +16,10 @@
     "unknown_card": "Tip de card necunoscut.",
     "card_issued": "Card emis.",
     "card_not_issued": "Cardul nu a putut fi emis.",
-    "gave_away": "Ți-ai dat %s."
+    "gave_away": "Ți-ai dat %s.",
+    "photo_updated": "Poza de buletin a fost actualizată.",
+    "photo_failed": "Poza nu a putut fi făcută.",
+    "cleanup_done": "Au fost șterse %s poze nefolosite."
   },
   "prompt": {
     "show": "Arată",
@@ -39,7 +42,9 @@
   "command": {
     "issueid": "Emite o carte de identitate unui jucător",
     "target": "ID-ul jucătorului pe server",
-    "card": "Numele obiectului card"
+    "card": "Numele obiectului card",
+    "idcardphoto": "Refă poza de buletin a unui jucător",
+    "idcardcleanup": "Șterge pozele de buletin nefolosite"
   },
   "metadata": {
     "first_name": "Prenume",

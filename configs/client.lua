@@ -1,6 +1,7 @@
 return {
     viewDistance = 25.0,
     giveDistance = 2.0,
+    photoCache = 32,
 
     poses = {
         hold = {

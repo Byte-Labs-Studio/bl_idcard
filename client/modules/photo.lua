@@ -2,6 +2,7 @@ local photo = {}
 
 local HEADSHOT_TIMEOUT <const> = 4000
 local NUI_TIMEOUT <const> = 5000
+local MAX_SOURCE <const> = 768 * 1024
 
 ---@type table<integer, promise>
 local pending = {}
@@ -16,8 +17,39 @@ local function headshotReady(handle)
 
 end
 
+---@param message table
 ---@return string?
-function photo.capture()
+local function encode(message)
+    nextId += 1
+
+    local id = nextId
+    local p = promise.new()
+
+    pending[id] = p
+    message.action = 'photo'
+    message.id = id
+    SendNUIMessage(message)
+
+    SetTimeout(NUI_TIMEOUT, function()
+        if pending[id] then
+            pending[id] = nil
+            p:resolve(nil)
+        end
+
+    end)
+
+    return Citizen.Await(p)
+end
+
+---@param source? string
+---@return string?
+function photo.capture(source)
+    if type(source) == 'string' then
+        if #source > MAX_SOURCE or not source:find('^data:image/') then return end
+
+        return encode({ source = source })
+    end
+
     local ped = cache.ped
     local handle = RegisterPedheadshotTransparent(ped)
     if not handle or handle < 0 then handle = RegisterPedheadshot(ped) end
@@ -30,22 +62,7 @@ function photo.capture()
         return
     end
 
-    nextId += 1
-    local id = nextId
-    local p = promise.new()
-    pending[id] = p
-
-    SendNUIMessage({ action = 'photo', id = id, txd = GetPedheadshotTxdString(handle) })
-
-    SetTimeout(NUI_TIMEOUT, function()
-        if pending[id] then
-            pending[id] = nil
-            p:resolve(nil)
-        end
-
-    end)
-
-    local data = Citizen.Await(p)
+    local data = encode({ txd = GetPedheadshotTxdString(handle) })
     UnregisterPedheadshot(handle)
 
     return data

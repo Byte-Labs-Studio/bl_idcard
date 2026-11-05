@@ -16,7 +16,10 @@
     "unknown_card": "Tuntematon korttityyppi.",
     "card_issued": "Kortti myönnetty.",
     "card_not_issued": "Korttia ei voitu myöntää.",
-    "gave_away": "Annoit pois: %s."
+    "gave_away": "Annoit pois: %s.",
+    "photo_updated": "Henkilökorttikuva päivitetty.",
+    "photo_failed": "Kuvaa ei voitu ottaa.",
+    "cleanup_done": "Poistettiin %s käyttämätöntä kuvaa."
   },
   "prompt": {
     "show": "Näytä",
@@ -39,7 +42,9 @@
   "command": {
     "issueid": "Myönnä pelaajalle henkilökortti",
     "target": "Pelaajan palvelin-ID",
-    "card": "Kortin esineen nimi"
+    "card": "Kortin esineen nimi",
+    "idcardphoto": "Ota pelaajalle uusi henkilökorttikuva",
+    "idcardcleanup": "Poista käyttämättömät henkilökorttikuvat"
   },
   "metadata": {
     "first_name": "Etunimi",
