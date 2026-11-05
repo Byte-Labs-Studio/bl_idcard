@@ -1,0 +1,51 @@
+{
+  "notify": {
+    "title": "Henkilökortti",
+    "nobody_close": "Kukaan ei ole tarpeeksi lähellä.",
+    "returned": "Korttisi palautettiin sinulle.",
+    "gave_back": "Palautit kortin.",
+    "interrupted": "Luovutus keskeytyi.",
+    "issue_failed": "Korttia ei voitu myöntää.",
+    "issued": "%s myönnetty.",
+    "busy_target": "Hän ei voi ottaa sitä nyt.",
+    "holding_out": "Ojennat korttia...",
+    "refused": "Hän ei ottanut sitä.",
+    "too_late": "Liian myöhään.",
+    "get_closer": "Mene lähemmäs palauttaaksesi sen.",
+    "hands_full": "Hänellä on kädet täynnä.",
+    "unknown_card": "Tuntematon korttityyppi.",
+    "card_issued": "Kortti myönnetty.",
+    "card_not_issued": "Korttia ei voitu myöntää.",
+    "gave_away": "Annoit pois: %s."
+  },
+  "prompt": {
+    "show": "Näytä",
+    "hand_over": "Ojenna",
+    "look": "Katso",
+    "put_away": "Laita pois",
+    "hand_back": "Palauta",
+    "tilt": "Kallista",
+    "flip": "Käännä",
+    "done": "Valmis",
+    "take": "Ota kortti",
+    "refuse": "Kieltäydy",
+    "look_at": "Katso korttia",
+    "give_away": "Anna"
+  },
+  "keybind": {
+    "hand_over": "Ojenna kädessäsi oleva henkilökortti",
+    "close_popup": "Sulje henkilökorttiikkuna"
+  },
+  "command": {
+    "issueid": "Myönnä pelaajalle henkilökortti",
+    "target": "Pelaajan palvelin-ID",
+    "card": "Kortin esineen nimi"
+  },
+  "metadata": {
+    "first_name": "Etunimi",
+    "last_name": "Sukunimi",
+    "dob": "Syntymäaika",
+    "number": "Kortin nro",
+    "expires": "Voimassa"
+  }
+}

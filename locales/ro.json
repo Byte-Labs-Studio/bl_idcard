@@ -1,0 +1,51 @@
+{
+  "notify": {
+    "title": "Buletin",
+    "nobody_close": "Nimeni nu este destul de aproape.",
+    "returned": "Cardul ți-a fost returnat.",
+    "gave_back": "Ai returnat cardul.",
+    "interrupted": "Predarea a fost întreruptă.",
+    "issue_failed": "Acest card nu a putut fi emis.",
+    "issued": "%s emis.",
+    "busy_target": "Nu îl poate lua acum.",
+    "holding_out": "Întinzi cardul...",
+    "refused": "Nu l-a luat.",
+    "too_late": "Prea târziu.",
+    "get_closer": "Apropie-te ca să îl returnezi.",
+    "hands_full": "Are mâinile ocupate.",
+    "unknown_card": "Tip de card necunoscut.",
+    "card_issued": "Card emis.",
+    "card_not_issued": "Cardul nu a putut fi emis.",
+    "gave_away": "Ți-ai dat %s."
+  },
+  "prompt": {
+    "show": "Arată",
+    "hand_over": "Predă",
+    "look": "Privește",
+    "put_away": "Pune deoparte",
+    "hand_back": "Returnează",
+    "tilt": "Înclină",
+    "flip": "Întoarce",
+    "done": "Gata",
+    "take": "Ia buletinul",
+    "refuse": "Refuză",
+    "look_at": "Privește buletinul",
+    "give_away": "Dă"
+  },
+  "keybind": {
+    "hand_over": "Predă cartea de identitate pe care o ții",
+    "close_popup": "Închide fereastra buletinului"
+  },
+  "command": {
+    "issueid": "Emite o carte de identitate unui jucător",
+    "target": "ID-ul jucătorului pe server",
+    "card": "Numele obiectului card"
+  },
+  "metadata": {
+    "first_name": "Prenume",
+    "last_name": "Nume",
+    "dob": "Data nașterii",
+    "number": "Nr. card",
+    "expires": "Expiră"
+  }
+}

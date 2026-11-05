@@ -1,0 +1,51 @@
+{
+  "notify": {
+    "title": "Carte",
+    "nobody_close": "Personne n'est assez proche.",
+    "returned": "Votre carte vous a été rendue.",
+    "gave_back": "Vous avez rendu la carte.",
+    "interrupted": "La remise a été interrompue.",
+    "issue_failed": "Cette carte n'a pas pu être délivrée.",
+    "issued": "%s délivrée.",
+    "busy_target": "Cette personne ne peut pas la prendre maintenant.",
+    "holding_out": "Vous la tendez...",
+    "refused": "Cette personne ne l'a pas prise.",
+    "too_late": "Trop tard.",
+    "get_closer": "Approchez-vous pour la rendre.",
+    "hands_full": "Cette personne a les mains prises.",
+    "unknown_card": "Type de carte inconnu.",
+    "card_issued": "Carte délivrée.",
+    "card_not_issued": "La carte n'a pas pu être délivrée.",
+    "gave_away": "Vous avez donné votre %s."
+  },
+  "prompt": {
+    "show": "Montrer",
+    "hand_over": "Donner",
+    "look": "Regarder",
+    "put_away": "Ranger",
+    "hand_back": "Rendre",
+    "tilt": "Incliner",
+    "flip": "Retourner",
+    "done": "Terminé",
+    "take": "Prendre la carte",
+    "refuse": "Refuser",
+    "look_at": "Regarder la carte",
+    "give_away": "Donner"
+  },
+  "keybind": {
+    "hand_over": "Donner la carte d'identité que vous tenez",
+    "close_popup": "Fermer la carte"
+  },
+  "command": {
+    "issueid": "Délivrer une carte d'identité à un joueur",
+    "target": "ID serveur du joueur",
+    "card": "Nom de l'objet carte"
+  },
+  "metadata": {
+    "first_name": "Prénom",
+    "last_name": "Nom",
+    "dob": "Date de naissance",
+    "number": "N° de carte",
+    "expires": "Expire"
+  }
+}

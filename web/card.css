@@ -1,0 +1,458 @@
+@font-face {
+  font-family: 'Silkscreen';
+  src: url('fonts/silkscreen-latin-400-normal.woff2') format('woff2');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'Silkscreen';
+  src: url('fonts/silkscreen-latin-700-normal.woff2') format('woff2');
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: 'Roboto Condensed';
+  src: url('fonts/roboto-condensed-latin-500-normal.woff2') format('woff2');
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'Roboto Condensed';
+  src: url('fonts/roboto-condensed-latin-700-normal.woff2') format('woff2');
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: 'Roboto Condensed';
+  src: url('fonts/roboto-condensed-latin-800-normal.woff2') format('woff2');
+  font-weight: 800;
+}
+
+@font-face {
+  font-family: 'Plex Mono';
+  src: url('fonts/ibm-plex-mono-latin-500-normal.woff2') format('woff2');
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'Plex Mono';
+  src: url('fonts/ibm-plex-mono-latin-600-normal.woff2') format('woff2');
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: 'Mr Dafoe';
+  src: url('fonts/mr-dafoe-latin-400-normal.woff2') format('woff2');
+  font-weight: 400;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 1024px;
+  height: 1346px;
+  overflow: hidden;
+  background: #252525;
+}
+
+body.popup {
+  height: 646px;
+  background: transparent;
+}
+
+#texture {
+  position: relative;
+  width: 1024px;
+  height: 1346px;
+  --bg: #e5fcff;
+  --bg2: #6fcbe9;
+  --title: #89b1ff;
+  --text: #323443;
+  --brand: #8685ef;
+  --tx: 0;
+  --ty: 0;
+  --glare: 0.15;
+  color: var(--text);
+}
+
+.face {
+  position: absolute;
+  left: 0;
+  width: 1024px;
+  height: 646px;
+  overflow: hidden;
+  border-radius: 34px;
+  font-family: 'Roboto Condensed', 'Arial Narrow', Arial, sans-serif;
+  background: linear-gradient(120deg, var(--bg) 0%, var(--bg2) 100%);
+}
+
+#front {
+  top: 0;
+}
+
+#back {
+  top: 673px;
+}
+
+body.popup #back,
+body.popup #edge {
+  display: none;
+}
+
+#edge {
+  position: absolute;
+  left: 0;
+  top: 1326px;
+  width: 1024px;
+  height: 20px;
+  background: linear-gradient(90deg, var(--bg), var(--bg2));
+}
+
+.hexes {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  color: var(--text);
+  opacity: 0.07;
+}
+
+.security {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  color: var(--title);
+  opacity: 0.22;
+}
+
+.seal {
+  display: block;
+}
+
+.header {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 26px;
+  text-align: center;
+}
+
+.title {
+  position: relative;
+  display: inline-block;
+  font: 700 72px/1 'Silkscreen', monospace;
+  letter-spacing: 1px;
+  color: var(--title);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.title::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 4px;
+  top: 4px;
+  z-index: -1;
+  color: var(--text);
+  opacity: 0.25;
+}
+
+.label {
+  margin-top: 6px;
+  font: 800 34px/1 'Roboto Condensed', sans-serif;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+.emblem {
+  position: absolute;
+  left: 34px;
+  top: 30px;
+  width: 92px;
+  height: 80px;
+  object-fit: contain;
+}
+
+.chip {
+  position: absolute;
+  right: 40px;
+  top: 34px;
+  display: grid;
+  grid-template-columns: repeat(4, 14px);
+  gap: 4px;
+}
+
+.chip i {
+  width: 14px;
+  height: 14px;
+  background: var(--title);
+}
+
+.chip i:nth-child(odd) {
+  opacity: 0.55;
+}
+
+.photo {
+  position: absolute;
+  left: 40px;
+  top: 168px;
+  width: 262px;
+  height: 302px;
+}
+
+.photo .frame {
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  background: var(--title);
+}
+
+.photo .inner {
+  position: absolute;
+  inset: 8px;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  background: radial-gradient(circle at 50% 35%, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.35) 70%);
+  overflow: hidden;
+}
+
+.photo img {
+  position: absolute;
+  left: -12%;
+  top: -2%;
+  width: 124%;
+  height: 124%;
+  object-fit: cover;
+}
+
+.photo .glow {
+  position: absolute;
+  left: 15%;
+  top: 15%;
+  width: 70%;
+  height: 70%;
+  filter: blur(28px);
+  opacity: 0.7;
+}
+
+.silhouette {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 38%, rgba(50, 52, 67, 0.55) 0 19%, transparent 20%),
+    radial-gradient(ellipse 46% 34% at 50% 100%, rgba(50, 52, 67, 0.55) 0 98%, transparent 100%);
+}
+
+.fields {
+  position: absolute;
+  left: 344px;
+  top: 172px;
+  width: 520px;
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  column-gap: 30px;
+  row-gap: 22px;
+}
+
+.field label {
+  display: block;
+  font: 700 22px/1 'Roboto Condensed', sans-serif;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.field b {
+  display: block;
+  margin-top: 6px;
+  font: 800 40px/1.05 'Roboto Condensed', sans-serif;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.field.mono b {
+  font: 600 36px/1.1 'Plex Mono', monospace;
+  letter-spacing: 1px;
+}
+
+.stamp {
+  position: absolute;
+  right: 150px;
+  bottom: 42px;
+  width: 210px;
+  height: 210px;
+  color: var(--text);
+  opacity: 0.16;
+  transform: rotate(-14deg);
+}
+
+.ghost {
+  position: absolute;
+  right: 28px;
+  bottom: 26px;
+  width: 104px;
+  height: 120px;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  background: conic-gradient(from calc(var(--tx) * 90deg), #ff9ad5, #8685ef, #6fe9d6, #ffde70, #ff9ad5);
+}
+
+.ghost img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.55;
+  mix-blend-mode: luminosity;
+  filter: grayscale(1) contrast(1.2);
+}
+
+.signature {
+  position: absolute;
+  left: 36px;
+  top: 500px;
+  max-width: 300px;
+  font: 400 64px/1 'Mr Dafoe', cursive;
+  white-space: nowrap;
+  transform-origin: 0 50%;
+  opacity: 0.85;
+}
+
+.signline {
+  position: absolute;
+  left: 36px;
+  top: 574px;
+  width: 290px;
+  height: 3px;
+  background: var(--text);
+  opacity: 0.6;
+}
+
+.strip {
+  position: absolute;
+  left: 344px;
+  right: 0;
+  bottom: 0;
+  height: 26px;
+  background: repeating-linear-gradient(90deg, var(--title) 0 18px, transparent 18px 26px);
+  opacity: 0.35;
+}
+
+.holo {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    calc(115deg + var(--tx) * 40deg),
+    transparent 30%,
+    rgba(255, 255, 255, calc(var(--glare) * 1.4)) 45%,
+    rgba(134, 133, 239, calc(var(--glare) * 0.9)) 52%,
+    transparent 66%
+  );
+  background-position: calc(50% + var(--tx) * 30%) calc(50% + var(--ty) * 30%);
+  background-size: 180% 180%;
+  mix-blend-mode: screen;
+}
+
+#back .band {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 46px;
+  height: 104px;
+  background: #252525;
+}
+
+#back .band span {
+  position: absolute;
+  right: 36px;
+  top: 34px;
+  font: 700 30px/1 'Silkscreen', monospace;
+  letter-spacing: 3px;
+  color: var(--brand);
+}
+
+.print {
+  position: absolute;
+  left: 40px;
+  top: 182px;
+  width: 600px;
+}
+
+.print h3 {
+  font: 800 28px/1 'Roboto Condensed', sans-serif;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.print .grid {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  justify-content: start;
+  column-gap: 34px;
+  row-gap: 14px;
+}
+
+.print .field b {
+  font-size: 30px;
+}
+
+.legal {
+  margin-top: 18px;
+  font: 500 20px/1.3 'Roboto Condensed', sans-serif;
+  opacity: 0.75;
+}
+
+.mark {
+  position: absolute;
+  right: 50px;
+  top: 190px;
+  width: 260px;
+  height: 226px;
+  opacity: 0.95;
+}
+
+.mark img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.25));
+}
+
+.barcode {
+  position: absolute;
+  left: 40px;
+  right: 40px;
+  bottom: 66px;
+  height: 92px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 10px 18px;
+}
+
+.barcode canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.mrz {
+  position: absolute;
+  left: 40px;
+  right: 40px;
+  bottom: 22px;
+  font: 600 26px/1 'Plex Mono', monospace;
+  letter-spacing: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  opacity: 0.8;
+}

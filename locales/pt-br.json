@@ -1,0 +1,51 @@
+{
+  "notify": {
+    "title": "Identidade",
+    "nobody_close": "Ninguém está perto o suficiente.",
+    "returned": "Seu cartão foi devolvido para você.",
+    "gave_back": "Você devolveu o cartão.",
+    "interrupted": "A entrega foi interrompida.",
+    "issue_failed": "Não foi possível emitir este cartão.",
+    "issued": "%s emitido.",
+    "busy_target": "Essa pessoa não pode pegar agora.",
+    "holding_out": "Estendendo o cartão...",
+    "refused": "Essa pessoa não pegou.",
+    "too_late": "Tarde demais.",
+    "get_closer": "Chegue mais perto para devolver.",
+    "hands_full": "Essa pessoa está com as mãos ocupadas.",
+    "unknown_card": "Tipo de cartão desconhecido.",
+    "card_issued": "Cartão emitido.",
+    "card_not_issued": "Não foi possível emitir o cartão.",
+    "gave_away": "Você entregou seu %s."
+  },
+  "prompt": {
+    "show": "Mostrar",
+    "hand_over": "Entregar",
+    "look": "Olhar",
+    "put_away": "Guardar",
+    "hand_back": "Devolver",
+    "tilt": "Inclinar",
+    "flip": "Virar",
+    "done": "Pronto",
+    "take": "Pegar identidade",
+    "refuse": "Recusar",
+    "look_at": "Olhar identidade",
+    "give_away": "Dar"
+  },
+  "keybind": {
+    "hand_over": "Entregar o documento de identidade que você está segurando",
+    "close_popup": "Fechar a janela do documento"
+  },
+  "command": {
+    "issueid": "Emitir um documento de identidade para um jogador",
+    "target": "ID do jogador no servidor",
+    "card": "Nome do item do cartão"
+  },
+  "metadata": {
+    "first_name": "Nome",
+    "last_name": "Sobrenome",
+    "dob": "Data de nascimento",
+    "number": "Nº do cartão",
+    "expires": "Validade"
+  }
+}

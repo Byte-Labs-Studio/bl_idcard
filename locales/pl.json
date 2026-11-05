@@ -1,0 +1,51 @@
+{
+  "notify": {
+    "title": "Dowód",
+    "nobody_close": "Nikt nie jest wystarczająco blisko.",
+    "returned": "Twoja karta wróciła do ciebie.",
+    "gave_back": "Oddałeś kartę.",
+    "interrupted": "Przekazanie zostało przerwane.",
+    "issue_failed": "Nie można wydać tej karty.",
+    "issued": "Wydano: %s.",
+    "busy_target": "Ta osoba nie może jej teraz wziąć.",
+    "holding_out": "Podajesz kartę...",
+    "refused": "Ta osoba jej nie wzięła.",
+    "too_late": "Za późno.",
+    "get_closer": "Podejdź bliżej, aby ją oddać.",
+    "hands_full": "Ta osoba ma zajęte ręce.",
+    "unknown_card": "Nieznany typ karty.",
+    "card_issued": "Karta wydana.",
+    "card_not_issued": "Nie udało się wydać karty.",
+    "gave_away": "Oddałeś swój dokument: %s."
+  },
+  "prompt": {
+    "show": "Pokaż",
+    "hand_over": "Przekaż",
+    "look": "Obejrzyj",
+    "put_away": "Schowaj",
+    "hand_back": "Oddaj",
+    "tilt": "Przechyl",
+    "flip": "Obróć",
+    "done": "Gotowe",
+    "take": "Weź dowód",
+    "refuse": "Odmów",
+    "look_at": "Obejrzyj dowód",
+    "give_away": "Daj"
+  },
+  "keybind": {
+    "hand_over": "Przekaż trzymany dowód",
+    "close_popup": "Zamknij okno dokumentu"
+  },
+  "command": {
+    "issueid": "Wydaj graczowi dowód",
+    "target": "ID gracza na serwerze",
+    "card": "Nazwa przedmiotu karty"
+  },
+  "metadata": {
+    "first_name": "Imię",
+    "last_name": "Nazwisko",
+    "dob": "Data urodzenia",
+    "number": "Nr karty",
+    "expires": "Ważna do"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "notify": {
+    "title": "Kimlik",
+    "nobody_close": "Yeterince yakın kimse yok.",
+    "returned": "Kartın sana geri verildi.",
+    "gave_back": "Kartı geri verdin.",
+    "interrupted": "Teslim kesildi.",
+    "issue_failed": "Bu kart çıkarılamadı.",
+    "issued": "%s çıkarıldı.",
+    "busy_target": "Şu an alamıyor.",
+    "holding_out": "Kartı uzatıyorsun...",
+    "refused": "Almadı.",
+    "too_late": "Çok geç.",
+    "get_closer": "Geri vermek için yaklaş.",
+    "hands_full": "Elleri dolu.",
+    "unknown_card": "Bilinmeyen kart türü.",
+    "card_issued": "Kart çıkarıldı.",
+    "card_not_issued": "Kart çıkarılamadı.",
+    "gave_away": "%s verdin."
+  },
+  "prompt": {
+    "show": "Göster",
+    "hand_over": "Teslim et",
+    "look": "Bak",
+    "put_away": "Kaldır",
+    "hand_back": "Geri ver",
+    "tilt": "Eğ",
+    "flip": "Çevir",
+    "done": "Tamam",
+    "take": "Kimliği al",
+    "refuse": "Reddet",
+    "look_at": "Kimliğe bak",
+    "give_away": "Ver"
+  },
+  "keybind": {
+    "hand_over": "Elindeki kimlik kartını teslim et",
+    "close_popup": "Kimlik penceresini kapat"
+  },
+  "command": {
+    "issueid": "Bir oyuncuya kimlik kartı çıkar",
+    "target": "Oyuncunun sunucu kimliği",
+    "card": "Kart eşyasının adı"
+  },
+  "metadata": {
+    "first_name": "Ad",
+    "last_name": "Soyad",
+    "dob": "Doğum tarihi",
+    "number": "Kart no.",
+    "expires": "Son geçerlilik"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "notify": {
+    "title": "ID",
+    "nobody_close": "Ingen er tæt nok på.",
+    "returned": "Dit kort blev givet tilbage.",
+    "gave_back": "Du gav kortet tilbage.",
+    "interrupted": "Overleveringen blev afbrudt.",
+    "issue_failed": "Kortet kunne ikke udstedes.",
+    "issued": "%s udstedt.",
+    "busy_target": "De kan ikke tage det lige nu.",
+    "holding_out": "Rækker det frem...",
+    "refused": "De tog det ikke.",
+    "too_late": "For sent.",
+    "get_closer": "Gå tættere på for at give det tilbage.",
+    "hands_full": "De har hænderne fulde.",
+    "unknown_card": "Ukendt korttype.",
+    "card_issued": "Kort udstedt.",
+    "card_not_issued": "Kortet kunne ikke udstedes.",
+    "gave_away": "Du gav dit %s væk."
+  },
+  "prompt": {
+    "show": "Vis",
+    "hand_over": "Giv",
+    "look": "Kig",
+    "put_away": "Læg væk",
+    "hand_back": "Giv tilbage",
+    "tilt": "Vip",
+    "flip": "Vend",
+    "done": "Færdig",
+    "take": "Tag ID",
+    "refuse": "Afvis",
+    "look_at": "Kig på ID",
+    "give_away": "Giv"
+  },
+  "keybind": {
+    "hand_over": "Giv det ID-kort, du holder",
+    "close_popup": "Luk ID-kort vinduet"
+  },
+  "command": {
+    "issueid": "Udsted et ID-kort til en spiller",
+    "target": "Spillerens server-id",
+    "card": "Kortets item-navn"
+  },
+  "metadata": {
+    "first_name": "Fornavn",
+    "last_name": "Efternavn",
+    "dob": "Fødselsdato",
+    "number": "Kortnr.",
+    "expires": "Udløber"
+  }
+}

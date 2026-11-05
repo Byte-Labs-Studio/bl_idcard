@@ -1,21 +1,17 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
-    <link href="https://fonts.cdnfonts.com/css/acterumsignaturepersonaluse" rel="stylesheet">
-                
-                
-
-    
-    <title>Byte Labs Template</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    html, body { margin: 0; width: 100vw; height: 100vh; overflow: hidden; background: transparent; }
+    #popup { position: absolute; top: 18vh; right: 6vw; width: 34vw; aspect-ratio: 1024 / 646; opacity: 0; transform: translateY(1.5vh); transition: opacity 0.2s, transform 0.2s; pointer-events: none; }
+    #popup.open { opacity: 1; transform: none; }
+    #popup iframe { position: absolute; top: 0; left: 0; width: 1024px; height: 646px; border: 0; transform-origin: 0 0; border-radius: 34px; box-shadow: 0 2vh 5vh rgba(0, 0, 0, 0.45); }
+  </style>
+</head>
+<body>
+  <div id="popup"></div>
+  <script src="photo.js"></script>
+  <script src="popup.js"></script>
+</body>
 </html>

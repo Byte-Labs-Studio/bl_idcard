@@ -1,0 +1,51 @@
+{
+  "notify": {
+    "title": "Preukaz",
+    "nobody_close": "Nikto nie je dosť blízko.",
+    "returned": "Preukaz sa ti vrátil.",
+    "gave_back": "Vrátil si preukaz.",
+    "interrupted": "Odovzdanie bolo prerušené.",
+    "issue_failed": "Tento preukaz sa nedá vydať.",
+    "issued": "%s vydaný.",
+    "busy_target": "Teraz si ho nemôže vziať.",
+    "holding_out": "Podávaš preukaz...",
+    "refused": "Nevzal si ho.",
+    "too_late": "Príliš neskoro.",
+    "get_closer": "Priblíž sa, aby si ho vrátil.",
+    "hands_full": "Má plné ruky.",
+    "unknown_card": "Neznámy typ preukazu.",
+    "card_issued": "Preukaz vydaný.",
+    "card_not_issued": "Preukaz sa nepodarilo vydať.",
+    "gave_away": "Dal si preč: %s."
+  },
+  "prompt": {
+    "show": "Ukázať",
+    "hand_over": "Odovzdať",
+    "look": "Pozrieť",
+    "put_away": "Odložiť",
+    "hand_back": "Vrátiť",
+    "tilt": "Nakloniť",
+    "flip": "Otočiť",
+    "done": "Hotovo",
+    "take": "Vziať preukaz",
+    "refuse": "Odmietnuť",
+    "look_at": "Pozrieť preukaz",
+    "give_away": "Daj"
+  },
+  "keybind": {
+    "hand_over": "Odovzdať preukaz, ktorý držíš",
+    "close_popup": "Zavrieť okno preukazu"
+  },
+  "command": {
+    "issueid": "Vydať hráčovi preukaz",
+    "target": "ID hráča na serveri",
+    "card": "Názov predmetu preukazu"
+  },
+  "metadata": {
+    "first_name": "Meno",
+    "last_name": "Priezvisko",
+    "dob": "Dátum narodenia",
+    "number": "Č. karty",
+    "expires": "Platnosť do"
+  }
+}

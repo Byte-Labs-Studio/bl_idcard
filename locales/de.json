@@ -1,0 +1,51 @@
+{
+  "notify": {
+    "title": "Ausweis",
+    "nobody_close": "Niemand ist nah genug.",
+    "returned": "Dein Ausweis wurde dir zurückgegeben.",
+    "gave_back": "Du hast den Ausweis zurückgegeben.",
+    "interrupted": "Die Übergabe wurde abgebrochen.",
+    "issue_failed": "Dieser Ausweis konnte nicht ausgestellt werden.",
+    "issued": "%s ausgestellt.",
+    "busy_target": "Die Person kann ihn gerade nicht nehmen.",
+    "holding_out": "Hältst ihn hin...",
+    "refused": "Die Person hat ihn nicht genommen.",
+    "too_late": "Zu spät.",
+    "get_closer": "Geh näher ran, um ihn zurückzugeben.",
+    "hands_full": "Die Person hat die Hände voll.",
+    "unknown_card": "Unbekannter Ausweistyp.",
+    "card_issued": "Ausweis ausgestellt.",
+    "card_not_issued": "Ausweis konnte nicht ausgestellt werden.",
+    "gave_away": "Du hast deinen %s weggegeben."
+  },
+  "prompt": {
+    "show": "Zeigen",
+    "hand_over": "Übergeben",
+    "look": "Ansehen",
+    "put_away": "Wegstecken",
+    "hand_back": "Zurückgeben",
+    "tilt": "Neigen",
+    "flip": "Umdrehen",
+    "done": "Fertig",
+    "take": "Ausweis nehmen",
+    "refuse": "Ablehnen",
+    "look_at": "Ausweis ansehen",
+    "give_away": "Geben"
+  },
+  "keybind": {
+    "hand_over": "Den Ausweis übergeben, den du hältst",
+    "close_popup": "Ausweis-Popup schließen"
+  },
+  "command": {
+    "issueid": "Einem Spieler einen Ausweis ausstellen",
+    "target": "Server-ID des Spielers",
+    "card": "Item-Name des Ausweises"
+  },
+  "metadata": {
+    "first_name": "Vorname",
+    "last_name": "Nachname",
+    "dob": "Geburtsdatum",
+    "number": "Karten-Nr.",
+    "expires": "Gültig bis"
+  }
+}
