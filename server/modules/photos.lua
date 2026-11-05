@@ -177,7 +177,7 @@ function photos.inspect(data, legacy)
         width, height = jpegSize(head)
         mime = width and 'image/jpeg'
 
-        if width and decode(body:sub(-4)):sub(-2) ~= '\255\217' then return end
+        if width and decode(body:sub(-8)):sub(-2) ~= '\255\217' then return end
 
     end
 
