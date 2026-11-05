@@ -39,6 +39,8 @@ local incoming = {}
 local last = {}
 ---@type table<integer, { pose: string, back: boolean }>
 local queuedPose = {}
+---@type table<integer, { tokens: number, updated: integer }>
+local photoBudgets = {}
 local watching = false
 
 ---@param name string
@@ -68,6 +70,26 @@ function shows.throttle(src, key, wait)
     if entry[key] and now - entry[key] < wait then return false end
 
     entry[key] = now
+
+    return true
+end
+
+---@param src integer
+---@return boolean
+function shows.photoBudget(src)
+    local now = GetGameTimer()
+    local budget = photoBudgets[src]
+
+    if not budget then
+        budget = { tokens = 8, updated = now }
+        photoBudgets[src] = budget
+    end
+
+    budget.tokens = math.min(8, budget.tokens + math.max(0, now - budget.updated) * 0.008)
+    budget.updated = now
+    if budget.tokens < 1 then return false end
+
+    budget.tokens = budget.tokens - 1
 
     return true
 end
@@ -519,7 +541,13 @@ function shows.photo(src, token, photoId)
 
     if not near(src, show.holder, config.tolerance.view) then return { ok = false, reason = 'too_far' } end
 
+    local budget = photoBudgets[src]
+    local holder = show.holder
     local photo = photos.get(photoId)
+    if active[token] ~= show or show.holder ~= holder or photoBudgets[src] ~= budget then return { ok = false, reason = 'not_found' } end
+
+    if not near(src, holder, config.tolerance.view) then return { ok = false, reason = 'too_far' } end
+
     if not photo then return { ok = false, reason = 'missing' } end
 
     return { ok = true, photo = photo }
@@ -535,6 +563,7 @@ end
 function shows.drop(src)
     offers[src] = nil
     last[src] = nil
+    photoBudgets[src] = nil
     incoming[src] = nil
     queuedPose[src] = nil
 

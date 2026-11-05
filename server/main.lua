@@ -60,10 +60,12 @@ lib.callback.register(event('server:card'), function(src, token)
 end)
 
 lib.callback.register(event('server:photo'), function(src, token, photoId)
+    if type(photoId) ~= 'number' or photoId ~= photoId or photoId < 1 or photoId > 4294967295 then return { ok = false, reason = 'bad_request' } end
+
     photoId = math.tointeger(photoId)
     if type(token) ~= 'string' or #token ~= TOKEN_LENGTH or not photoId or photoId < 1 then return { ok = false, reason = 'bad_request' } end
 
-    if not shows.throttle(src, ('photo:%s'):format(photoId), 1000) then return { ok = false, reason = 'cooldown' } end
+    if not shows.photoBudget(src) then return { ok = false, reason = 'cooldown' } end
 
     return shows.photo(src, token, photoId)
 end)
