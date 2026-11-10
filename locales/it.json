@@ -1,0 +1,56 @@
+{
+  "notify": {
+    "title": "Documento",
+    "nobody_close": "Nessuno è abbastanza vicino.",
+    "returned": "La tua carta ti è stata restituita.",
+    "gave_back": "Hai restituito la carta.",
+    "interrupted": "La consegna è stata interrotta.",
+    "issue_failed": "Impossibile rilasciare questa carta.",
+    "issued": "%s rilasciata.",
+    "busy_target": "Non può prenderla adesso.",
+    "holding_out": "La stai porgendo...",
+    "refused": "Non l'ha presa.",
+    "too_late": "Troppo tardi.",
+    "get_closer": "Avvicinati per restituirla.",
+    "hands_full": "Ha le mani occupate.",
+    "unknown_card": "Tipo di carta sconosciuto.",
+    "card_issued": "Carta rilasciata.",
+    "card_not_issued": "Impossibile rilasciare la carta.",
+    "gave_away": "Hai dato via il tuo %s.",
+    "photo_updated": "Foto del documento aggiornata.",
+    "photo_failed": "Impossibile scattare la foto.",
+    "cleanup_done": "Eliminate %s foto non usate."
+  },
+  "prompt": {
+    "show": "Mostra",
+    "hand_over": "Consegna",
+    "look": "Guarda",
+    "put_away": "Metti via",
+    "hand_back": "Restituisci",
+    "tilt": "Inclina",
+    "flip": "Gira",
+    "done": "Fatto",
+    "take": "Prendi documento",
+    "refuse": "Rifiuta",
+    "look_at": "Guarda documento",
+    "give_away": "Dai"
+  },
+  "keybind": {
+    "hand_over": "Consegna la carta d'identità che hai in mano",
+    "close_popup": "Chiudi il riquadro del documento"
+  },
+  "command": {
+    "issueid": "Rilascia una carta d'identità a un giocatore",
+    "target": "ID del giocatore sul server",
+    "card": "Nome dell'oggetto carta",
+    "idcardphoto": "Rifai la foto del documento di un giocatore",
+    "idcardcleanup": "Elimina le foto dei documenti non usate"
+  },
+  "metadata": {
+    "first_name": "Nome",
+    "last_name": "Cognome",
+    "dob": "Data di nascita",
+    "number": "N. carta",
+    "expires": "Scadenza"
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "notify": {
+    "title": "ID",
+    "nobody_close": "No hay nadie lo bastante cerca.",
+    "returned": "Te han devuelto tu tarjeta.",
+    "gave_back": "Has devuelto la tarjeta.",
+    "interrupted": "La entrega se ha interrumpido.",
+    "issue_failed": "No se pudo emitir esta tarjeta.",
+    "issued": "%s emitida.",
+    "busy_target": "No puede cogerla ahora mismo.",
+    "holding_out": "Ofreciéndola...",
+    "refused": "No la ha cogido.",
+    "too_late": "Demasiado tarde.",
+    "get_closer": "Acércate para devolverla.",
+    "hands_full": "Tiene las manos ocupadas.",
+    "unknown_card": "Tipo de tarjeta desconocido.",
+    "card_issued": "Tarjeta emitida.",
+    "card_not_issued": "No se pudo emitir la tarjeta.",
+    "gave_away": "Has entregado tu %s.",
+    "photo_updated": "Foto del carné actualizada.",
+    "photo_failed": "No se pudo tomar la foto.",
+    "cleanup_done": "Se borraron %s fotos sin usar."
+  },
+  "prompt": {
+    "show": "Mostrar",
+    "hand_over": "Entregar",
+    "look": "Mirar",
+    "put_away": "Guardar",
+    "hand_back": "Devolver",
+    "tilt": "Inclinar",
+    "flip": "Girar",
+    "done": "Listo",
+    "take": "Coger ID",
+    "refuse": "Rechazar",
+    "look_at": "Mirar ID",
+    "give_away": "Dar"
+  },
+  "keybind": {
+    "hand_over": "Entregar la tarjeta de identidad que llevas",
+    "close_popup": "Cerrar la ventana del carné"
+  },
+  "command": {
+    "issueid": "Emitir una tarjeta de identidad a un jugador",
+    "target": "ID del jugador en el servidor",
+    "card": "Nombre del item de la tarjeta",
+    "idcardphoto": "Volver a tomar la foto del carné de un jugador",
+    "idcardcleanup": "Borrar fotos de carné sin usar"
+  },
+  "metadata": {
+    "first_name": "Nombre",
+    "last_name": "Apellido",
+    "dob": "Fecha de nacimiento",
+    "number": "N.º de tarjeta",
+    "expires": "Caduca"
+  }
+}

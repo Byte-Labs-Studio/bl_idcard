@@ -1,0 +1,56 @@
+{
+  "notify": {
+    "title": "ID",
+    "nobody_close": "Nobody is close enough.",
+    "returned": "Your card was returned to you.",
+    "gave_back": "You gave the card back.",
+    "interrupted": "The handover was interrupted.",
+    "issue_failed": "This card could not be issued.",
+    "issued": "%s issued.",
+    "busy_target": "They cannot take it right now.",
+    "holding_out": "Holding it out...",
+    "refused": "They did not take it.",
+    "too_late": "Too late.",
+    "get_closer": "Get closer to hand it back.",
+    "hands_full": "They have their hands full.",
+    "unknown_card": "Unknown card type.",
+    "card_issued": "Card issued.",
+    "card_not_issued": "Could not issue the card.",
+    "gave_away": "You gave away your %s.",
+    "photo_updated": "ID photo updated.",
+    "photo_failed": "Could not take the photo.",
+    "cleanup_done": "Removed %s unused photos."
+  },
+  "prompt": {
+    "show": "Show",
+    "hand_over": "Hand over",
+    "look": "Look",
+    "put_away": "Put away",
+    "hand_back": "Hand back",
+    "tilt": "Tilt",
+    "flip": "Flip",
+    "done": "Done",
+    "take": "Take ID",
+    "refuse": "Refuse",
+    "look_at": "Look at ID",
+    "give_away": "Give"
+  },
+  "keybind": {
+    "hand_over": "Hand over the ID card you are holding",
+    "close_popup": "Close the ID card popup"
+  },
+  "command": {
+    "issueid": "Issue an ID card to a player",
+    "target": "Player server id",
+    "card": "Card item name",
+    "idcardphoto": "Retake a player's ID photo",
+    "idcardcleanup": "Remove ID photos no card uses"
+  },
+  "metadata": {
+    "first_name": "First name",
+    "last_name": "Last name",
+    "dob": "Date of birth",
+    "number": "Card no.",
+    "expires": "Expires"
+  }
+}

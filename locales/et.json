@@ -1,0 +1,56 @@
+{
+  "notify": {
+    "title": "ID",
+    "nobody_close": "Keegi pole piisavalt lähedal.",
+    "returned": "Sinu kaart anti sulle tagasi.",
+    "gave_back": "Andsid kaardi tagasi.",
+    "interrupted": "Üleandmine katkes.",
+    "issue_failed": "Seda kaarti ei saanud väljastada.",
+    "issued": "%s väljastatud.",
+    "busy_target": "Ta ei saa seda praegu võtta.",
+    "holding_out": "Ulatad kaarti...",
+    "refused": "Ta ei võtnud seda.",
+    "too_late": "Liiga hilja.",
+    "get_closer": "Mine lähemale, et see tagasi anda.",
+    "hands_full": "Tal on käed täis.",
+    "unknown_card": "Tundmatu kaardi tüüp.",
+    "card_issued": "Kaart väljastatud.",
+    "card_not_issued": "Kaarti ei saanud väljastada.",
+    "gave_away": "Andsid oma %s ära.",
+    "photo_updated": "ID-foto uuendatud.",
+    "photo_failed": "Fotot ei õnnestunud teha.",
+    "cleanup_done": "Eemaldati %s kasutamata fotot."
+  },
+  "prompt": {
+    "show": "Näita",
+    "hand_over": "Anna üle",
+    "look": "Vaata",
+    "put_away": "Pane ära",
+    "hand_back": "Anna tagasi",
+    "tilt": "Kalluta",
+    "flip": "Pööra",
+    "done": "Valmis",
+    "take": "Võta ID",
+    "refuse": "Keeldu",
+    "look_at": "Vaata ID-d",
+    "give_away": "Anna"
+  },
+  "keybind": {
+    "hand_over": "Anna üle ID-kaart, mida hoiad",
+    "close_popup": "Sulge ID-kaardi aken"
+  },
+  "command": {
+    "issueid": "Väljasta mängijale ID-kaart",
+    "target": "Mängija serveri ID",
+    "card": "Kaardi eseme nimi",
+    "idcardphoto": "Tee mängijale uus ID-foto",
+    "idcardcleanup": "Eemalda kasutamata ID-fotod"
+  },
+  "metadata": {
+    "first_name": "Eesnimi",
+    "last_name": "Perekonnanimi",
+    "dob": "Sünnikuupäev",
+    "number": "Kaardi nr",
+    "expires": "Kehtib kuni"
+  }
+}

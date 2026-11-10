@@ -1,0 +1,56 @@
+{
+  "notify": {
+    "title": "ID",
+    "nobody_close": "Niemand is dichtbij genoeg.",
+    "returned": "Je kaart is aan je teruggegeven.",
+    "gave_back": "Je hebt de kaart teruggegeven.",
+    "interrupted": "De overdracht is onderbroken.",
+    "issue_failed": "Deze kaart kon niet worden uitgegeven.",
+    "issued": "%s uitgegeven.",
+    "busy_target": "Diegene kan hem nu niet aannemen.",
+    "holding_out": "Je houdt hem voor...",
+    "refused": "Diegene heeft hem niet aangenomen.",
+    "too_late": "Te laat.",
+    "get_closer": "Kom dichterbij om hem terug te geven.",
+    "hands_full": "Diegene heeft zijn handen vol.",
+    "unknown_card": "Onbekend kaarttype.",
+    "card_issued": "Kaart uitgegeven.",
+    "card_not_issued": "Kaart kon niet worden uitgegeven.",
+    "gave_away": "Je hebt je %s weggegeven.",
+    "photo_updated": "ID-foto bijgewerkt.",
+    "photo_failed": "Kon de foto niet maken.",
+    "cleanup_done": "%s ongebruikte foto's verwijderd."
+  },
+  "prompt": {
+    "show": "Tonen",
+    "hand_over": "Overhandigen",
+    "look": "Bekijken",
+    "put_away": "Wegstoppen",
+    "hand_back": "Teruggeven",
+    "tilt": "Kantelen",
+    "flip": "Omdraaien",
+    "done": "Klaar",
+    "take": "ID aannemen",
+    "refuse": "Weigeren",
+    "look_at": "ID bekijken",
+    "give_away": "Geven"
+  },
+  "keybind": {
+    "hand_over": "De ID-kaart overhandigen die je vasthoudt",
+    "close_popup": "ID-kaart venster sluiten"
+  },
+  "command": {
+    "issueid": "Een ID-kaart aan een speler uitgeven",
+    "target": "Server-ID van de speler",
+    "card": "Itemnaam van de kaart",
+    "idcardphoto": "Maak een nieuwe ID-foto van een speler",
+    "idcardcleanup": "Verwijder ongebruikte ID-foto's"
+  },
+  "metadata": {
+    "first_name": "Voornaam",
+    "last_name": "Achternaam",
+    "dob": "Geboortedatum",
+    "number": "Kaartnr.",
+    "expires": "Verloopt"
+  }
+}

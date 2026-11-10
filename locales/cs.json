@@ -1,0 +1,56 @@
+{
+  "notify": {
+    "title": "Průkaz",
+    "nobody_close": "Nikdo není dost blízko.",
+    "returned": "Průkaz se ti vrátil.",
+    "gave_back": "Vrátil jsi průkaz.",
+    "interrupted": "Předání bylo přerušeno.",
+    "issue_failed": "Tento průkaz nelze vydat.",
+    "issued": "%s vydán.",
+    "busy_target": "Teď si ho nemůže vzít.",
+    "holding_out": "Podáváš průkaz...",
+    "refused": "Nevzal si ho.",
+    "too_late": "Příliš pozdě.",
+    "get_closer": "Přibliž se, abys ho vrátil.",
+    "hands_full": "Má plné ruce.",
+    "unknown_card": "Neznámý typ průkazu.",
+    "card_issued": "Průkaz vydán.",
+    "card_not_issued": "Průkaz se nepodařilo vydat.",
+    "gave_away": "Dal jsi pryč: %s.",
+    "photo_updated": "Fotka na průkaz aktualizována.",
+    "photo_failed": "Fotku se nepodařilo pořídit.",
+    "cleanup_done": "Smazáno nepoužitých fotek: %s."
+  },
+  "prompt": {
+    "show": "Ukázat",
+    "hand_over": "Předat",
+    "look": "Prohlédnout",
+    "put_away": "Schovat",
+    "hand_back": "Vrátit",
+    "tilt": "Naklonit",
+    "flip": "Otočit",
+    "done": "Hotovo",
+    "take": "Vzít průkaz",
+    "refuse": "Odmítnout",
+    "look_at": "Prohlédnout průkaz",
+    "give_away": "Dát"
+  },
+  "keybind": {
+    "hand_over": "Předat průkaz, který držíš",
+    "close_popup": "Zavřít okno průkazu"
+  },
+  "command": {
+    "issueid": "Vydat hráči průkaz",
+    "target": "ID hráče na serveru",
+    "card": "Název předmětu průkazu",
+    "idcardphoto": "Znovu vyfotit hráče na průkaz",
+    "idcardcleanup": "Smazat nepoužité fotky průkazů"
+  },
+  "metadata": {
+    "first_name": "Jméno",
+    "last_name": "Příjmení",
+    "dob": "Datum narození",
+    "number": "Č. karty",
+    "expires": "Platnost do"
+  }
+}

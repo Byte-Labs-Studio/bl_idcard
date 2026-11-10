@@ -1,0 +1,56 @@
+{
+  "notify": {
+    "title": "ID",
+    "nobody_close": "Ingen är tillräckligt nära.",
+    "returned": "Ditt kort lämnades tillbaka.",
+    "gave_back": "Du lämnade tillbaka kortet.",
+    "interrupted": "Överlämningen avbröts.",
+    "issue_failed": "Kortet kunde inte utfärdas.",
+    "issued": "%s utfärdat.",
+    "busy_target": "Personen kan inte ta det just nu.",
+    "holding_out": "Håller fram det...",
+    "refused": "Personen tog det inte.",
+    "too_late": "För sent.",
+    "get_closer": "Gå närmare för att lämna tillbaka det.",
+    "hands_full": "Personen har händerna fulla.",
+    "unknown_card": "Okänd korttyp.",
+    "card_issued": "Kort utfärdat.",
+    "card_not_issued": "Kortet kunde inte utfärdas.",
+    "gave_away": "Du gav bort ditt %s.",
+    "photo_updated": "ID-foto uppdaterat.",
+    "photo_failed": "Kunde inte ta fotot.",
+    "cleanup_done": "Tog bort %s oanvända foton."
+  },
+  "prompt": {
+    "show": "Visa",
+    "hand_over": "Lämna över",
+    "look": "Titta",
+    "put_away": "Lägg undan",
+    "hand_back": "Lämna tillbaka",
+    "tilt": "Luta",
+    "flip": "Vänd",
+    "done": "Klar",
+    "take": "Ta ID",
+    "refuse": "Avböj",
+    "look_at": "Titta på ID",
+    "give_away": "Ge"
+  },
+  "keybind": {
+    "hand_over": "Lämna över ID-kortet du håller",
+    "close_popup": "Stäng ID-kortsfönstret"
+  },
+  "command": {
+    "issueid": "Utfärda ett ID-kort till en spelare",
+    "target": "Spelarens server-id",
+    "card": "Kortets föremålsnamn",
+    "idcardphoto": "Ta ett nytt ID-foto av en spelare",
+    "idcardcleanup": "Ta bort ID-foton som inget kort använder"
+  },
+  "metadata": {
+    "first_name": "Förnamn",
+    "last_name": "Efternamn",
+    "dob": "Födelsedatum",
+    "number": "Kortnr",
+    "expires": "Giltigt till"
+  }
+}
