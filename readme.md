@@ -1,10 +1,11 @@
 # Byte Labs - ID Card
 Physical ID cards and licenses for your FiveM server. The card is a real prop in the player's hand, and its front and back show the character's photo, name, date of birth and card number, so everyone nearby sees it in the world.
 
-![Preview](preview.png)
+[![bl_idcard preview](.github/preview.gif)](https://github.com/Byte-Labs-Studio/bl_idcard/releases/latest)
 
 Website: [Byte Labs](https://byte-labs.net)
 Discord: [Byte Labs](https://discord.gg/fqsqSjZfxE)
+Full preview video: [Releases](https://github.com/Byte-Labs-Studio/bl_idcard/releases/latest)
 
 ## Features
 - **Show (E):** hold the card up. The player you face gets a close-up of it. Works from the driver seat through the window.
